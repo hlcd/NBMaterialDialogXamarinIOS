@@ -1,4 +1,5 @@
 ﻿using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace NBMaterialDialogXamarinIOS.Sample
@@ -14,8 +15,9 @@ namespace NBMaterialDialogXamarinIOS.Sample
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            var loadingIndicatoLabel = new UILabel(new CGRect(20,46,190,30));
+            var loadingIndicatoLabel = new UILabel(new CGRect(32,56,195,21));
             loadingIndicatoLabel.Text = "Simple loading indicator:";
+            loadingIndicatoLabel.MinimumFontSize = 17;
             loadingIndicatoLabel.SizeToFit();
 
             View.AddSubview(loadingIndicatoLabel);
@@ -24,6 +26,15 @@ namespace NBMaterialDialogXamarinIOS.Sample
                 new NBMaterialCircularActivityIndicator(new CGRect(x: 247, y: 46, width: 48, height: 48));
             loadingIndicatorView.SetAnimating(true);
             View.AddSubview(loadingIndicatorView);
+
+            var showToastButton = new UIButton(new CGRect(32,253, 195, 30));
+            showToastButton.SetTitleColor(UIColor.Blue, UIControlState.Normal);
+            showToastButton.SetTitle("Display a simple Toast",UIControlState.Normal);
+            showToastButton.TouchUpInside +=
+                (sender, args) =>
+                        NBMaterialToast.ShowWithText(View, "Super awesome toast message, cheers!", NBLunchDuration.Long);
+
+            View.AddSubview(showToastButton);
         }
     }
 }
