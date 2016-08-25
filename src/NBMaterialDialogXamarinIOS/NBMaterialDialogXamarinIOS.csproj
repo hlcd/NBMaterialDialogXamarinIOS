@@ -31,18 +31,26 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BFPaperButtonXamarinIOS, Version=1.0.6081.21354, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\sln\NBMaterialDialogXamarinIOS\packages\BFPaperButtonXamarinIOS.1.0.0\lib\xamarinios10\BFPaperButtonXamarinIOS.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="NBMaterialAlertDialog.cs" />
     <Compile Include="NBMaterialCircularActivityIndicator.cs" />
+    <Compile Include="NBMaterialDialog.cs" />
     <Compile Include="NBMaterialSnackbar.cs" />
     <Compile Include="NBMaterialToast.cs" />
     <Compile Include="UIColorExtensions.cs" />
-    <Compile Include="NbConfig.cs" />
+    <Compile Include="NBConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UIFontExtensions.cs" />
   </ItemGroup>
