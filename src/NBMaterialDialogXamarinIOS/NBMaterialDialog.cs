@@ -52,6 +52,7 @@ namespace NBMaterialDialogXamarinIOS
         private NBMaterialDialog strongSelf;
         private Action<bool> userAction;
         private NSMutableDictionary constraintViews;
+        private nfloat? _dialogHeight;
 
         public NBMaterialDialog()
         {
@@ -73,7 +74,7 @@ namespace NBMaterialDialogXamarinIOS
             View.AddSubview(tappableView);
             backgroundColor = color;
             SetupContainerView();
-            View.AddSubview(containerView);
+            //View.AddSubview(containerView);
 
             //Retaining itself strongly so can exist without strong refrence
             strongSelf = this;
@@ -210,6 +211,7 @@ namespace NBMaterialDialogXamarinIOS
             string okButtonTitle, Action<bool> action, string cancelButtonTitle, bool stackedButtons)
         {
 
+            _dialogHeight = dialogHeight;
             isStacked = stackedButtons;
 
             nfloat totalButtonTitleLength = 0.0f;
@@ -285,8 +287,7 @@ namespace NBMaterialDialogXamarinIOS
             SetupViewConstraints();
 
             //// To get dynamic width to work we need to comment this out and uncomment the stuff in setupViewConstraints. But its currently not working..
-            containerView.Frame = new CGRect(kWidthMargin, (windowSize.Height - (dialogHeight ?? kMinimumHeight)) / 2, windowSize.Width - (kWidthMargin * 2), Math.Min(kMaxHeight, (dialogHeight ?? kMinimumHeight)));
-            containerView.ClipsToBounds = true;
+            SetContainerSize();
             return this;
         }
 
@@ -294,17 +295,18 @@ namespace NBMaterialDialogXamarinIOS
         public override void ViewWillLayoutSubviews()
         {
             base.ViewWillLayoutSubviews();
-            var sz = UIScreen.MainScreen.Bounds.Size;
-            var sver = UIDevice.CurrentDevice.SystemVersion;
-            if (!UIDevice.CurrentDevice.CheckSystemVersion(8, 0))
-            {
+            SetContainerSize();
+        }
 
-                // iOS versions before 7.0 did not switch the width and height on device roration
-                if (UIApplication.SharedApplication.StatusBarOrientation == UIInterfaceOrientation.LandscapeLeft || UIApplication.SharedApplication.StatusBarOrientation == UIInterfaceOrientation.LandscapeRight)
-                {
-                    var ssz = sz;
-                    sz = new CGSize(width: ssz.Height, height: ssz.Width);
-                }
+        private void SetContainerSize()
+        {
+            if (windowView != null)
+            {
+                var windowSize = windowView.Bounds;
+                containerView.Frame = new CGRect(kWidthMargin, (windowSize.Height - (_dialogHeight ?? kMinimumHeight))/2,
+                    windowSize.Width - (kWidthMargin*2), Math.Min(kMaxHeight, (_dialogHeight ?? kMinimumHeight)));
+                containerView.ClipsToBounds = true;
+                //View.Frame = windowView.Bounds;
             }
         }
 
@@ -468,6 +470,5 @@ namespace NBMaterialDialogXamarinIOS
             contentView.TranslatesAutoresizingMaskIntoConstraints = false;
             containerView.AddSubview(contentView);
         }
-
     }
 }
