@@ -27,7 +27,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             loadingIndicatorView.SetAnimating(true);
             View.AddSubview(loadingIndicatorView);
 
-            var showToastButton = new UIButton(new CGRect(32,253, 195, 30));
+            var showToastButton = new UIButton(new CGRect(32,215, 195, 30));
             showToastButton.SetTitleColor(UIColor.Blue, UIControlState.Normal);
             showToastButton.SetTitle("Display a simple Toast",UIControlState.Normal);
             showToastButton.TouchUpInside +=
@@ -35,6 +35,15 @@ namespace NBMaterialDialogXamarinIOS.Sample
                         NBMaterialToast.ShowWithText(View, "Super awesome toast message, cheers!", NBLunchDuration.Long);
 
             View.AddSubview(showToastButton);
+
+            var showSnackbarButton = new UIButton(new CGRect(32, 253, 230, 30));
+            showSnackbarButton.SetTitleColor(UIColor.Blue, UIControlState.Normal);
+            showSnackbarButton.SetTitle("Display a simple Snackbar", UIControlState.Normal);
+            showSnackbarButton.TouchUpInside +=
+                (sender, args) =>
+                        NBMaterialSnackbar.ShowWithText(View, "Super awesome toast message, cheers!", NBLunchDuration.Long);
+
+            View.AddSubview(showSnackbarButton);
         }
     }
 }

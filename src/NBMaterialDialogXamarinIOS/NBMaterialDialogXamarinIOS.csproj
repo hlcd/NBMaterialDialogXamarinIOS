@@ -39,6 +39,7 @@
   <ItemGroup />
   <ItemGroup>
     <Compile Include="NBMaterialCircularActivityIndicator.cs" />
+    <Compile Include="NBMaterialSnackbar.cs" />
     <Compile Include="NBMaterialToast.cs" />
     <Compile Include="UIColorExtensions.cs" />
     <Compile Include="NbConfig.cs" />
