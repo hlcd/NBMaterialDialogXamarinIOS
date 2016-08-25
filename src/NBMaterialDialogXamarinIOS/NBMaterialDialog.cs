@@ -314,7 +314,7 @@ namespace NBMaterialDialogXamarinIOS
         /**
         Invoked when the user taps the background (anywhere except the dialog)
         */
-        internal void TappedBg()
+        internal virtual void TappedBg()
         {
             HideDialog(-1);
         }

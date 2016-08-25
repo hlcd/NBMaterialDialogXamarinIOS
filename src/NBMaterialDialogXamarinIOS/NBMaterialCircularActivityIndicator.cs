@@ -67,6 +67,11 @@ namespace NBMaterialDialogXamarinIOS
         private const string KNBCircleStrokeAnimationKey = "nbmaterialcircularactivityindicator.stroke";
         private const string KNBCircleRotationAnimationKey = "nbmaterialcircularactivityindicator.rotation";
 
+        public NBMaterialCircularActivityIndicator()
+        {
+            Initialize();
+        }
+
         public NBMaterialCircularActivityIndicator(CGRect rect) : base(rect)
         {
             Initialize();
@@ -140,7 +145,7 @@ namespace NBMaterialDialogXamarinIOS
             }
         }
 
-        private void StartAnimating()
+        public void StartAnimating()
         {
             if (IsAnimating)
                 return;

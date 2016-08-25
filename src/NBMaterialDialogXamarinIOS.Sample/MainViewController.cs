@@ -46,6 +46,21 @@ namespace NBMaterialDialogXamarinIOS.Sample
                         cancelButtonTitle: "DISAGREE");
             View.AddSubview(alertDialogButton);
 
+            var progressDialogButton = new UIButton(new CGRect(32, 177, 230, 30));
+            progressDialogButton.SetTitleColor(UIColor.Blue, UIControlState.Normal);
+            progressDialogButton.SetTitle("Show loading (3 seconds)", UIControlState.Normal);
+            progressDialogButton.TouchUpInside +=
+                (sender, args) =>
+                {
+                    var loadingDialog = NBMaterialLoadingDialog.ShowLoadingDialogWithText(View,
+                        message: "Loading something..");
+                    NSTimer.CreateScheduledTimer(3, (_) =>
+                    {
+                        loadingDialog.HideDialog();
+                    });
+                };
+            View.AddSubview(progressDialogButton);
+
 
             var showToastButton = new UIButton(new CGRect(32,215, 195, 30));
             showToastButton.SetTitleColor(UIColor.Blue, UIControlState.Normal);

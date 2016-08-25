@@ -47,6 +47,7 @@
     <Compile Include="NBMaterialAlertDialog.cs" />
     <Compile Include="NBMaterialCircularActivityIndicator.cs" />
     <Compile Include="NBMaterialDialog.cs" />
+    <Compile Include="NBMaterialLoadingDialog.cs" />
     <Compile Include="NBMaterialSnackbar.cs" />
     <Compile Include="NBMaterialToast.cs" />
     <Compile Include="UIColorExtensions.cs" />
