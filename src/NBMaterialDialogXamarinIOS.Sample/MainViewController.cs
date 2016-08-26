@@ -41,9 +41,18 @@ namespace NBMaterialDialogXamarinIOS.Sample
             alertDialogButton.SetTitle("Show Alert Dialog with title", UIControlState.Normal);
             alertDialogButton.TouchUpInside +=
                 (sender, args) =>
-                    NBMaterialAlertDialog.ShowAlertWithTextAndTitle(View, text: "Simple alert dialog",
-                        title: "Catchy Title", dialogHeight: 160, okButtonTitle: "AGREE", action: action,
-                        cancelButtonTitle: "DISAGREE");
+                {
+                    var settings = new NBAlertDialogSettings
+                    {
+                        Text = "Simple alert dialog",
+                        Title = "Catchy Title",
+                        DialogHeight = 160,
+                        OkButtonTitle = "AGREE",
+                        CancelButtonTitle = "DISAGREE",
+                        ButtonAction = action
+                    };
+                    NBMaterialAlertDialog.ShowAlertWithTextAndTitle(settings);
+                };
             View.AddSubview(alertDialogButton);
 
             var progressDialogButton = new UIButton(new CGRect(32, 177, 230, 30));
@@ -52,8 +61,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             progressDialogButton.TouchUpInside +=
                 (sender, args) =>
                 {
-                    var loadingDialog = NBMaterialLoadingDialog.ShowLoadingDialogWithText(View,
-                        message: "Loading something..");
+                    var loadingDialog = NBMaterialLoadingDialog.ShowLoadingDialogWithText("Loading something..");
                     NSTimer.CreateScheduledTimer(3, (_) =>
                     {
                         loadingDialog.HideDialog();
@@ -76,7 +84,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             showSnackbarButton.SetTitle("Display a simple Snackbar", UIControlState.Normal);
             showSnackbarButton.TouchUpInside +=
                 (sender, args) =>
-                        NBMaterialSnackbar.ShowWithText(View, "Super awesome toast message, cheers!", NBLunchDuration.Long);
+                        NBMaterialSnackbar.ShowWithText(UIApplication.SharedApplication.KeyWindow.RootViewController.View, "Super awesome toast message, cheers!", NBLunchDuration.Long);
 
             View.AddSubview(showSnackbarButton);
         }

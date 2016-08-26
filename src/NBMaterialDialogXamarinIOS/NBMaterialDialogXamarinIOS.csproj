@@ -41,6 +41,7 @@
     <Reference Include="Xamarin.iOS" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NBDialogSettings.cs" />
     <Compile Include="NBMaterialAlertDialog.cs" />
     <Compile Include="NBMaterialCircularActivityIndicator.cs" />
     <Compile Include="NBMaterialDialog.cs" />

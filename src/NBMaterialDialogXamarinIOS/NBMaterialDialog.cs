@@ -53,6 +53,7 @@ namespace NBMaterialDialogXamarinIOS
         private Action<bool> userAction;
         private NSMutableDictionary constraintViews;
         private nfloat? _dialogHeight;
+        private bool _hideDialogOnTapOnOverlay;
 
         public NBMaterialDialog()
         {
@@ -114,109 +115,15 @@ namespace NBMaterialDialogXamarinIOS
             strongSelf = null;
         }
 
-        /**
-           Displays a simple dialog using a title and a view with the content you need
-           - parameter windowView: The window which the dialog is to be attached
-           - parameter title: The dialog title
-           - parameter content: A custom content view
-        */
-
-        public NBMaterialDialog ShowDialog(UIView windowView, string title, UIView content)
+        public NBMaterialDialog ShowDialog(NBDialogSettings settings)
         {
-            return ShowDialog(windowView, title: title, content: content, dialogHeight: null, okButtonTitle: null,
-                action: null, cancelButtonTitle: null, stackedButtons: false);
-        }
-
-        /**
-           Displays a simple dialog using a title and a view with the content you need
-           - parameter windowView: The window which the dialog is to be attached
-           - parameter title: The dialog title
-           - parameter content: A custom content view
-           - parameter dialogHeight: The height of the dialog
-        */
-
-
-        public NBMaterialDialog ShowDialog(UIView windowView, string title, UIView content, nfloat? dialogHeight)
-        {
-            return ShowDialog(windowView, title: title, content: content, dialogHeight: dialogHeight,
-                okButtonTitle: null, action: null, cancelButtonTitle: null, stackedButtons: false);
-        }
-
-        /**
-            Displays a simple dialog using a title and a view with the content you need
-            - parameter windowView: The window which the dialog is to be attached
-            - parameter title: The dialog title
-            - parameter content: A custom content view
-            - parameter dialogHeight: The height of the dialog
-            - parameter okButtonTitle: The title of the last button (far-most right), normally OK, CLOSE or YES (positive response).
-        */
-
-        public NBMaterialDialog ShowDialog(UIView windowView, string title, UIView content, nfloat? dialogHeight,
-            string okButtonTitle)
-        {
-            return ShowDialog(windowView, title: title, content: content, dialogHeight: dialogHeight,
-                okButtonTitle: okButtonTitle, action: null, cancelButtonTitle: null, stackedButtons: false);
-        }
-
-        /**
-          Displays a simple dialog using a title and a view with the content you need
-          - parameter windowView: The window which the dialog is to be attached
-          - parameter title: The dialog title
-          - parameter content: A custom content view
-          - parameter dialogHeight: The height of the dialog
-          - parameter okButtonTitle: The title of the last button (far-most right), normally OK, CLOSE or YES (positive response).
-          - parameter action: The action you wish to invoke when a button is clicked
-        */
-
-        public NBMaterialDialog ShowDialog(UIView windowView, string title, UIView content, nfloat? dialogHeight,
-            string okButtonTitle, Action<bool> action)
-        {
-            return ShowDialog(windowView, title: title, content: content, dialogHeight: dialogHeight,
-                okButtonTitle: okButtonTitle, action: action, cancelButtonTitle: null, stackedButtons: false);
-        }
-
-        /**
-           Displays a simple dialog using a title and a view with the content you need
-           - parameter windowView: The window which the dialog is to be attached
-           - parameter title: The dialog title
-           - parameter content: A custom content view
-           - parameter dialogHeight: The height of the dialog
-           - parameter okButtonTitle: The title of the last button (far-most right), normally OK, CLOSE or YES (positive response).
-           - parameter action: The action you wish to invoke when a button is clicked
-        */
-
-        public NBMaterialDialog ShowDialog(UIView windowView, string title, UIView content, nfloat? dialogHeight,
-            string okButtonTitle, Action<bool> action, string cancelButtonTitle)
-        {
-
-            return ShowDialog(windowView, title: title, content: content, dialogHeight: dialogHeight,
-                okButtonTitle: okButtonTitle, action: action, cancelButtonTitle: cancelButtonTitle,
-                stackedButtons: false);
-        }
-
-
-        /**
-        Displays a simple dialog using a title and a view with the content you need
-        - parameter windowView: The window which the dialog is to be attached
-        - parameter title: The dialog title
-        - parameter content: A custom content view
-        - parameter dialogHeight: The height of the dialog
-        - parameter okButtonTitle: The title of the last button (far-most right), normally OK, CLOSE or YES (positive response).
-        - parameter action: The action you wish to invoke when a button is clicked
-        - parameter cancelButtonTitle: The title of the first button (the left button), normally CANCEL or NO (negative response)
-        - parameter stackedButtons: Defines if a stackd button view should be used
-        */
-
-        public NBMaterialDialog ShowDialog(UIView windowView, string title, UIView content, nfloat? dialogHeight,
-            string okButtonTitle, Action<bool> action, string cancelButtonTitle, bool stackedButtons)
-        {
-
-            _dialogHeight = dialogHeight;
-            isStacked = stackedButtons;
+            _hideDialogOnTapOnOverlay = settings.HideDialogOnTapOnOverlay;
+            _dialogHeight = settings.DialogHeight;
+            isStacked = settings.StackedButtons;
 
             nfloat totalButtonTitleLength = 0.0f;
 
-            this.windowView = windowView;
+            windowView = settings.WindowView;
 
             var windowSize = windowView.Bounds;
 
@@ -228,23 +135,23 @@ namespace NBMaterialDialogXamarinIOS
 
             SetupContainerView();
             // Add content to contentView
-            contentView = content;
+            contentView = settings.Content;
             SetupContentView();
 
 
-            if (title != null)
+            if (settings.Title != null)
             {
-                SetupTitleLabelWithTitle(title);
+                SetupTitleLabelWithTitle(settings.Title);
             }
 
-            if (okButtonTitle != null)
+            if (settings.OkButtonTitle != null)
             {
                 UIStringAttributes attribs = new UIStringAttributes { Font = UIFontExtensions.RobotoMediumOfSize(14f) };
-                totalButtonTitleLength += new NSString(okButtonTitle.ToUpper()).GetSizeUsingAttributes(attribs).Width + 8;
-                if (cancelButtonTitle != null)
+                totalButtonTitleLength += new NSString(settings.OkButtonTitle.ToUpper()).GetSizeUsingAttributes(attribs).Width + 8;
+                if (settings.CancelButtonTitle != null)
                 {
                     totalButtonTitleLength +=
-                        new NSString(cancelButtonTitle.ToUpper()).GetSizeUsingAttributes(attribs).Width + 8;
+                        new NSString(settings.CancelButtonTitle.ToUpper()).GetSizeUsingAttributes(attribs).Width + 8;
                 }
 
                 // Calculate if the combined button title lengths are longer than max allowed for this dialog, if so use stacked buttons.
@@ -256,7 +163,7 @@ namespace NBMaterialDialogXamarinIOS
             }
 
             // Always display a close/ok button, but setting a title is optional.
-            if (okButtonTitle != null)
+            if (settings.OkButtonTitle != null)
             {
                 if (okButton == null)
                 {
@@ -264,12 +171,12 @@ namespace NBMaterialDialogXamarinIOS
                     okButton.Tag = 0;
                     okButton.TouchUpInside += (sender, args) => PressedAnyButton(sender as NSObject);
                 }
-                SetupButtonWithTitle(okButtonTitle, button: okButton, isStacked: isStacked);
+                SetupButtonWithTitle(settings.OkButtonTitle, button: okButton, isStacked: isStacked);
 
 
             }
 
-            if (cancelButtonTitle != null)
+            if (settings.CancelButtonTitle != null)
             {
                 if (cancelButton == null)
                 {
@@ -277,12 +184,12 @@ namespace NBMaterialDialogXamarinIOS
                     cancelButton.Tag = 1;
                     cancelButton.TouchUpInside += (sender, args) => PressedAnyButton(sender as NSObject);
                 }
-                SetupButtonWithTitle(cancelButtonTitle, button: cancelButton, isStacked: isStacked);
+                SetupButtonWithTitle(settings.CancelButtonTitle, button: cancelButton, isStacked: isStacked);
 
 
             }
 
-            userAction = action;
+            userAction = settings.ButtonAction;
 
             SetupViewConstraints();
 
@@ -316,7 +223,8 @@ namespace NBMaterialDialogXamarinIOS
         */
         internal virtual void TappedBg()
         {
-            HideDialog(-1);
+            if (_hideDialogOnTapOnOverlay)
+                HideDialog(-1);
         }
 
 

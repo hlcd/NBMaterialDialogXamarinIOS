@@ -16,7 +16,7 @@ namespace NBMaterialDialogXamarinIOS
         - parameter message: The message displayed to the user while its loading
         - returns: The Loading Dialog
         */
-        public static NBMaterialLoadingDialog ShowLoadingDialogWithText(UIView windowView, string message)
+        public static NBMaterialLoadingDialog ShowLoadingDialogWithText(string message)
         {
             var containerView = new UIView();
             var circularLoadingActivity = new NBMaterialCircularActivityIndicator();
@@ -60,7 +60,11 @@ namespace NBMaterialDialogXamarinIOS
 
             // Initialize dialog and display
             var dialog = new NBMaterialLoadingDialog();
-            dialog.ShowDialog(windowView, title: null, content: containerView);
+            var dialogSettings = new NBDialogSettings
+            {
+                Content = containerView
+            };
+            dialog.ShowDialog(dialogSettings);
 
             // Start spinner
             circularLoadingActivity.StartAnimating();
