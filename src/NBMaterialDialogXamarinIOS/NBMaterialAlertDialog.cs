@@ -10,7 +10,7 @@ namespace NBMaterialDialogXamarinIOS
 
     public class NBMaterialAlertDialog : NBMaterialDialog
     {
-        public static NBMaterialAlertDialog ShowAlertWithTextAndTitle(NBAlertDialogSettings settings)
+        public static NBMaterialAlertDialog Show(NBAlertDialogSettings settings)
         {
             var alertLabel = new UILabel();
             alertLabel.Lines = 0;

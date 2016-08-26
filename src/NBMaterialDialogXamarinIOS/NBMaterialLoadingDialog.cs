@@ -16,7 +16,7 @@ namespace NBMaterialDialogXamarinIOS
         - parameter message: The message displayed to the user while its loading
         - returns: The Loading Dialog
         */
-        public static NBMaterialLoadingDialog ShowLoadingDialogWithText(string message)
+        public static NBMaterialLoadingDialog Show(string message)
         {
             var containerView = new UIView();
             var circularLoadingActivity = new NBMaterialCircularActivityIndicator();

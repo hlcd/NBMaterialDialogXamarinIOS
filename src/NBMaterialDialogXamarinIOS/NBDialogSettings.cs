@@ -11,7 +11,7 @@ namespace NBMaterialDialogXamarinIOS
 
         public UIView WindowView
         {
-            get { return _windowView ?? GetTopView(); }
+            get { return _windowView ?? UIApplication.SharedApplication.GetTopView(); }
             set { _windowView = value; }
         }
 
@@ -29,16 +29,6 @@ namespace NBMaterialDialogXamarinIOS
 
         public bool StackedButtons { get; set; }
 
-        public bool HideDialogOnTapOnOverlay { get; set; }
-
-        private UIView GetTopView()
-        {
-            var rootViewController = UIApplication.SharedApplication.KeyWindow.RootViewController;
-            if (rootViewController.NavigationController != null)
-            {
-                return rootViewController.NavigationController?.TopViewController.View;
-            }
-            return rootViewController.View;
-        }
+        public bool HideDialogOnTapOnOverlay { get; set; }      
     }
 }

@@ -48,6 +48,7 @@
     <Compile Include="NBMaterialLoadingDialog.cs" />
     <Compile Include="NBMaterialSnackbar.cs" />
     <Compile Include="NBMaterialToast.cs" />
+    <Compile Include="UIApplicationExtensions.cs" />
     <Compile Include="UIColorExtensions.cs" />
     <Compile Include="NBConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -33,7 +33,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
                     b =>
                     {
                         string button = b ? "DISAGREE" : "AGREE";
-                        NBMaterialToast.ShowWithText(View, $"{button} was clicked",NBLunchDuration.Long);
+                        NBMaterialToast.Show($"{button} was clicked",NBLunchDuration.Long);
                     });
 
             var alertDialogButton = new UIButton(new CGRect(32, 139, 230, 30));
@@ -51,7 +51,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
                         CancelButtonTitle = "DISAGREE",
                         ButtonAction = action
                     };
-                    NBMaterialAlertDialog.ShowAlertWithTextAndTitle(settings);
+                    NBMaterialAlertDialog.Show(settings);
                 };
             View.AddSubview(alertDialogButton);
 
@@ -61,7 +61,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             progressDialogButton.TouchUpInside +=
                 (sender, args) =>
                 {
-                    var loadingDialog = NBMaterialLoadingDialog.ShowLoadingDialogWithText("Loading something..");
+                    var loadingDialog = NBMaterialLoadingDialog.Show("Loading something..");
                     NSTimer.CreateScheduledTimer(3, (_) =>
                     {
                         loadingDialog.HideDialog();
@@ -75,7 +75,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             showToastButton.SetTitle("Display a simple Toast",UIControlState.Normal);
             showToastButton.TouchUpInside +=
                 (sender, args) =>
-                        NBMaterialToast.ShowWithText(View, "Super awesome toast message, cheers!", NBLunchDuration.Long);
+                        NBMaterialToast.Show("Super awesome toast message, cheers!", NBLunchDuration.Long);
 
             View.AddSubview(showToastButton);
 
@@ -84,7 +84,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             showSnackbarButton.SetTitle("Display a simple Snackbar", UIControlState.Normal);
             showSnackbarButton.TouchUpInside +=
                 (sender, args) =>
-                        NBMaterialSnackbar.ShowWithText(UIApplication.SharedApplication.KeyWindow.RootViewController.View, "Super awesome toast message, cheers!", NBLunchDuration.Long);
+                        NBMaterialSnackbar.Show("Super awesome toast message, cheers!", NBLunchDuration.Long);
 
             View.AddSubview(showSnackbarButton);
         }

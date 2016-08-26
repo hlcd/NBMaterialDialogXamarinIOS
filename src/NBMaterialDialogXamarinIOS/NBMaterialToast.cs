@@ -124,9 +124,9 @@ namespace NBMaterialDialogXamarinIOS
             - parameter windowView: The window which the toast is to be attached
             - parameter text: The message to be displayed
         */
-        public static void ShowWithText(UIView windowView, string text)
+        public static void Show(string text, UIView windowView = null)
         {
-            NBMaterialToast.ShowWithText(windowView, text, NBLunchDuration.Medium);
+            NBMaterialToast.Show(text, NBLunchDuration.Medium);
         }
 
         /**
@@ -135,8 +135,13 @@ namespace NBMaterialDialogXamarinIOS
             - parameter text: The message to be displayed
             - parameter duration: The duration of the toast
         */
-        public static void ShowWithText(UIView windowView, string text, NBLunchDuration duration)
+        public static void Show(string text, NBLunchDuration duration, UIView windowView = null)
         {
+            if (windowView == null)
+            {
+                windowView = UIApplication.SharedApplication.GetTopView();
+            }
+
             NBMaterialToast toast = NBMaterialToast.CreateWithTextAndConstraints(windowView, text: text,
                 duration: duration);
             toast.Show();

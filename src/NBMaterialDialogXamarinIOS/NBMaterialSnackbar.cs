@@ -122,9 +122,9 @@ namespace NBMaterialDialogXamarinIOS
         
         - parameter text: The message to be displayed
         */
-        public static void ShowWithText(UIView windowView, string text)
+        public static void Show(string text, UIView windowView = null)
         {
-            NBMaterialSnackbar.ShowWithText(windowView, text, NBLunchDuration.Medium);
+            NBMaterialSnackbar.Show(text, NBLunchDuration.Medium, windowView);
         }
 
         /**
@@ -132,8 +132,12 @@ namespace NBMaterialDialogXamarinIOS
         - parameter text: The message to be displayed
         - parameter duration: The duration of the snackbar
         */
-        public static void ShowWithText(UIView windowView, string text, NBLunchDuration duration)
+        public static void Show(string text, NBLunchDuration duration, UIView windowView = null)
         {
+            if (windowView == null)
+            {
+                windowView = UIApplication.SharedApplication.GetTopView();
+            }
             NBMaterialSnackbar toast = NBMaterialSnackbar.CreateSingleWithTextAndDuration(windowView, text: text,
                 duration: duration);
             toast.Show();
