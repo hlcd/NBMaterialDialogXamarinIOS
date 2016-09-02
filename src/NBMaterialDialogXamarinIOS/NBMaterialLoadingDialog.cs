@@ -4,6 +4,12 @@ using UIKit;
 
 namespace NBMaterialDialogXamarinIOS
 {
+
+    public class NBMaterialLoadingDialogSettings : NBDialogSettings
+    {
+        public string Text { get; set; }
+    }
+
     public class NBMaterialLoadingDialog : NBMaterialDialog
     {
         public bool dismissOnBgTap = false;
@@ -16,7 +22,7 @@ namespace NBMaterialDialogXamarinIOS
         - parameter message: The message displayed to the user while its loading
         - returns: The Loading Dialog
         */
-        public static NBMaterialLoadingDialog Show(string message)
+        public static NBMaterialLoadingDialog Show(NBMaterialLoadingDialogSettings settings)
         {
             var containerView = new UIView();
             var circularLoadingActivity = new NBMaterialCircularActivityIndicator();
@@ -32,9 +38,9 @@ namespace NBMaterialDialogXamarinIOS
             loadingLabel.TranslatesAutoresizingMaskIntoConstraints = false;
             loadingLabel.Font = UIFontExtensions.RobotoRegularOfSize(14);
             loadingLabel.TextColor = NBConfig.PrimaryTextDark;
-            loadingLabel.Text = message;
+            loadingLabel.Text = settings.Text;
             // TODO: Add support for multiple lines, probably need to fix the dynamic dialog height todo first
-            loadingLabel.Lines = 1;
+            loadingLabel.Lines = 0;
 
             containerView.AddSubview(loadingLabel);
 
@@ -60,11 +66,10 @@ namespace NBMaterialDialogXamarinIOS
 
             // Initialize dialog and display
             var dialog = new NBMaterialLoadingDialog();
-            var dialogSettings = new NBDialogSettings
-            {
-                Content = containerView
-            };
-            dialog.ShowDialog(dialogSettings);
+            settings.Content = containerView;
+            settings.DialogHeight = settings.DialogHeight ?? dialog.kMinimumHeight;
+
+            dialog.ShowDialog(settings);
 
             // Start spinner
             circularLoadingActivity.StartAnimating();

@@ -213,6 +213,7 @@ namespace NBMaterialDialogXamarinIOS
                 containerView.Frame = new CGRect(kWidthMargin, (windowSize.Height - (_dialogHeight ?? kMinimumHeight))/2,
                     windowSize.Width - (kWidthMargin*2), Math.Min(kMaxHeight, (_dialogHeight ?? kMinimumHeight)));
                 containerView.ClipsToBounds = true;
+            //    contentView.Frame = new CGRect(0,0,containerView.Frame.Width-48f, contentView.Frame.Height);
                 //View.Frame = windowView.Bounds;
             }
         }
