@@ -31,8 +31,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BFPaperButtonXamarinIOS, Version=1.0.6081.21354, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\sln\NBMaterialDialogXamarinIOS\packages\BFPaperButtonXamarinIOS.1.0.0-pre\lib\xamarinios10\BFPaperButtonXamarinIOS.dll</HintPath>
+    <Reference Include="BFPaperButtonXamarinIOS, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\sln\NBMaterialDialogXamarinIOS\packages\BFPaperButtonXamarinIOS.1.0.1\lib\xamarinios10\BFPaperButtonXamarinIOS.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
