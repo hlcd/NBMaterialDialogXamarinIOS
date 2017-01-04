@@ -14,7 +14,14 @@ namespace NBMaterialDialogXamarinIOS
     {
         public bool dismissOnBgTap = false;
 
+        private UILabel _loadingLabel;
+
         protected nfloat kMinimumHeight => 72.0f;
+
+        internal void SetLoadingLabel(UILabel label)
+        {
+            _loadingLabel = label;
+        }
 
         /**
         Displays a loading dialog with a loading spinner, and a message
@@ -44,6 +51,7 @@ namespace NBMaterialDialogXamarinIOS
 
             containerView.AddSubview(loadingLabel);
 
+
             // Setup constraints
             NSMutableDictionary constraintViews = new NSMutableDictionary();
             constraintViews.SetValueForKey(circularLoadingActivity, new NSString("spinner"));
@@ -68,13 +76,20 @@ namespace NBMaterialDialogXamarinIOS
             var dialog = new NBMaterialLoadingDialog();
             settings.Content = containerView;
             settings.DialogHeight = settings.DialogHeight ?? dialog.kMinimumHeight;
-
+            dialog.SetLoadingLabel(loadingLabel);
             dialog.ShowDialog(settings);
 
             // Start spinner
             circularLoadingActivity.StartAnimating();
 
             return dialog;
+        }
+
+        public void UpdateDialogText(string text)
+        {
+            if(_loadingLabel == null)
+                return;
+            _loadingLabel.Text = text;
         }
 
         internal override void TappedBg()
