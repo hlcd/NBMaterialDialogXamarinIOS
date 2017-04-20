@@ -5,8 +5,6 @@ namespace NBMaterialDialogXamarinIOS
 {
     public class NBDialogSettings
     {
-
-
         private UIView _windowView;
 
         public UIView WindowView

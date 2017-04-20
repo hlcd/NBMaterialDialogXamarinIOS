@@ -119,13 +119,36 @@ namespace NBMaterialDialogXamarinIOS.Sample
                         NBMaterialSnackbar.Show("Super awesome toast message, cheers!", NBLunchDuration.Long);
 
             View.AddSubview(showSnackbarButton);
+
+            var pagedDialogButton = new UIButton(new CGRect(32, 291, 230, 30));
+            pagedDialogButton.SetTitleColor(UIColor.Blue, UIControlState.Normal);
+            pagedDialogButton.SetTitle("Show Paged Dialog", UIControlState.Normal);
+            pagedDialogButton.TouchUpInside +=
+                (sender, args) =>
+                {
+                    var pages = new List<NBPageDialogItem>()
+                    {
+                        new NBPageDialogItem(CreateAudiobooksWelcomeDialog(),300),
+                        new NBPageDialogItem(CreateAudiobooksHowToDialog(), 260),
+                        new NBPageDialogItem(CreateAudiobooksWelcomeDialog(),300)
+
+                    };
+                    var settings = new NBPagedDialogSettings();
+                    settings.OkButtonTitle = "OK";
+                    settings.Pages = pages;
+
+
+                    var dialog = new NBPagedDialog();
+                    dialog.ShowPagedDialog(settings);
+                };
+            View.AddSubview(pagedDialogButton);
         }
 
         public UIView CreateAudiobooksWelcomeDialog()
         {
             var topView = UIApplication.SharedApplication.GetTopView();
             var dialogWidth = topView.Frame.Width - 80;
-            var dialogHeight = 220;
+            var dialogHeight = 280;
 
             UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
             view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
@@ -159,10 +182,10 @@ namespace NBMaterialDialogXamarinIOS.Sample
             //new UILabel(new CGRect(0, alertLabel2.Frame.Y + alertLabel2.Frame.Height + 8, view.Frame.Width - 40, 130)));
             alertLabel3.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
             alertLabel3.TranslatesAutoresizingMaskIntoConstraints = false;
-            alertLabel3.Lines = 9;
+            alertLabel3.Lines = 18;
             alertLabel3.Font = UIFontExtensions.RobotoRegularOfSize(dialogWidth <= 240 ? SmallFontSize -1 : SmallFontSize);
             alertLabel3.TextColor = NBConfig.PrimaryTextDark;
-            alertLabel3.Text = "Pamiętaj, że zamawiając abonament bez limitu, część książek nie tylko przeczytasz, ale również odsłuchasz dzięki wersji z lektorem lub syntezatorem mowy (sukcesywnie zwiększamy ich liczbę). W każdej chwili możesz oczywiście przełączyć się między trybem czytania i słuchania.";
+            alertLabel3.Text = "Pamiętaj, że zamawiając abonament bez limitu, część książek nie tylko przeczytasz, ale również odsłuchasz dzięki wersji z lektorem lub syntezatorem mowy (sukcesywnie zwiększamy ich liczbę). W każdej chwili możesz oczywiście przełączyć się między trybem czytania i słuchania.Pamiętaj, że zamawiając abonament bez limitu, część książek nie tylko przeczytasz, ale również odsłuchasz dzięki wersji z lektorem lub syntezatorem mowy (sukcesywnie zwiększamy ich liczbę). W każdej chwili możesz oczywiście przełączyć się między trybem czytania i słuchania.";
             alertLabel3.SizeToFit();
             view.AddSubview(alertLabel3);
 

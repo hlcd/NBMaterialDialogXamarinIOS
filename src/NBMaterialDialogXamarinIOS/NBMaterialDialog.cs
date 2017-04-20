@@ -14,22 +14,22 @@ namespace NBMaterialDialogXamarinIOS
     public class NBMaterialDialog : UIViewController
     {
         // MARK: - Class variables
-        private UIView overlay;
+        private UIView _overlay;
         private UILabel titleLabel;
-        private UIView containerView = new UIView();
-        private UIView contentView = new UIView();
-        private BFPaperButton okButton;
-        private BFPaperButton cancelButton;
-        private UITapGestureRecognizer tapGesture;
+        protected UIView containerView = new UIView();
+        protected UIView contentView = new UIView();
+        protected BFPaperButton okButton;
+        protected BFPaperButton cancelButton;
+        protected UITapGestureRecognizer tapGesture;
         private UIColor backgroundColor;
-        private UIView windowView;
-        private UIView tappableView = new UIView();
+        protected UIView windowView;
+        protected UIView tappableView = new UIView();
 
-        private bool isStacked = false;
+        protected bool isStacked = false;
 
         private nfloat kBackgroundTransparency = 0.7f;
         private nfloat kPadding = 16.0f;
-        private nfloat kWidthMargin = 40.0f;
+        protected nfloat kWidthMargin = 40.0f;
         private nfloat kHeightMargin = 24.0f;
         protected nfloat kMinimumHeight => 120.0f;
 
@@ -50,10 +50,10 @@ namespace NBMaterialDialogXamarinIOS
         }
 
         private NBMaterialDialog strongSelf;
-        private Action<bool> userAction;
-        private NSMutableDictionary constraintViews;
-        private nfloat? _dialogHeight;
-        private bool _hideDialogOnTapOnOverlay;
+        protected Action<bool> userAction;
+        protected NSMutableDictionary constraintViews;
+        protected nfloat? _dialogHeight;
+        protected bool _hideDialogOnTapOnOverlay;
 
         public NBMaterialDialog()
         {
@@ -97,7 +97,7 @@ namespace NBMaterialDialogXamarinIOS
             :params: buttonIndex The tag index of the button which was clicked
         */
 
-        internal void HideDialog(int buttonIndex)
+        internal virtual void HideDialog(int buttonIndex)
         {
             if (buttonIndex >= 0)
             {
@@ -115,7 +115,7 @@ namespace NBMaterialDialogXamarinIOS
             strongSelf = null;
         }
 
-        public NBMaterialDialog ShowDialog(NBDialogSettings settings)
+        public virtual NBMaterialDialog ShowDialog(NBDialogSettings settings)
         {
             _hideDialogOnTapOnOverlay = settings.HideDialogOnTapOnOverlay;
             _dialogHeight = settings.DialogHeight;
@@ -205,7 +205,7 @@ namespace NBMaterialDialogXamarinIOS
             SetContainerSize();
         }
 
-        private void SetContainerSize()
+        protected void SetContainerSize()
         {
             if (windowView != null)
             {
@@ -233,13 +233,13 @@ namespace NBMaterialDialogXamarinIOS
         Invoked when a button is pressed
         - parameter sender: The button clicked
         */
-        internal void PressedAnyButton(NSObject sender)
+        internal virtual void PressedAnyButton(NSObject sender)
         {
             HideDialog((int)(sender as UIButton).Tag);
         }
 
 
-        private void SetupViewConstraints()
+        protected void SetupViewConstraints()
         {
             if (constraintViews == null)
             {
@@ -326,7 +326,7 @@ namespace NBMaterialDialogXamarinIOS
 
         //   Note: Private view helpers / initializers
 
-        private void SetupContainerView()
+        protected void SetupContainerView()
         {
             containerView.BackgroundColor = backgroundColor;
             containerView.Layer.CornerRadius = 2.0f;
@@ -336,7 +336,7 @@ namespace NBMaterialDialogXamarinIOS
             View.AddSubview(containerView);
         }
 
-        private void SetupTitleLabelWithTitle(string title)
+        protected void SetupTitleLabelWithTitle(string title)
         {
             titleLabel = new UILabel();
             if (title != null)
@@ -350,7 +350,7 @@ namespace NBMaterialDialogXamarinIOS
             }
         }
 
-        private void SetupButtonWithTitle(string title, BFPaperButton button, bool isStacked)
+        protected void SetupButtonWithTitle(string title, BFPaperButton button, bool isStacked)
         {
 
             button.TranslatesAutoresizingMaskIntoConstraints = false;
@@ -373,7 +373,7 @@ namespace NBMaterialDialogXamarinIOS
         }
 
 
-        private void SetupContentView()
+        protected void SetupContentView()
         {
             contentView.BackgroundColor = UIColor.Clear;
             contentView.TranslatesAutoresizingMaskIntoConstraints = false;
