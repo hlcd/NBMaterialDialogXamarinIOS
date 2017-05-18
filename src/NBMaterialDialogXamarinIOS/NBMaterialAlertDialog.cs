@@ -6,6 +6,8 @@ namespace NBMaterialDialogXamarinIOS
     public class NBAlertDialogSettings : NBDialogSettings
     {
         public string Text { get; set; }
+
+        public nfloat FontSize { get; set; } = 14;
     }
 
     public class NBMaterialAlertDialog : NBMaterialDialog
@@ -14,7 +16,7 @@ namespace NBMaterialDialogXamarinIOS
         {
             var alertLabel = new UILabel();
             alertLabel.Lines = 0;
-            alertLabel.Font = UIFontExtensions.RobotoRegularOfSize(14);
+            alertLabel.Font = UIFontExtensions.RobotoRegularOfSize(settings.FontSize);
             alertLabel.TextColor = NBConfig.PrimaryTextDark;
             alertLabel.Text = settings.Text;
             alertLabel.SizeToFit();
