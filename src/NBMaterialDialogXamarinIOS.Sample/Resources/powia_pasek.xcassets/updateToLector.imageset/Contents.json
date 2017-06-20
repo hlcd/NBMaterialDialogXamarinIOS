@@ -3,17 +3,16 @@
     {
       "scale": "1x",
       "idiom": "universal",
-      "filename": "powia_pasek.png"
+      "filename": "hdpi_audiobook_ios.png"
     },
     {
       "scale": "2x",
       "idiom": "universal",
-      "filename": "powia_pasek.png"
+      "filename": "xxhdpi_audiobook_ios.png"
     },
     {
       "scale": "3x",
-      "idiom": "universal",
-      "filename": "powia_pasek.png"
+      "idiom": "universal"
     },
     {
       "idiom": "universal"

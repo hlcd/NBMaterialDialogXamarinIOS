@@ -65,8 +65,8 @@ namespace NBMaterialDialogXamarinIOS.Sample
                 {
                     var settings = new NBAlertDialogSettings();
                     settings.OkButtonTitle = "OK";
-                    settings.Content = CreateAudiobooksHowToDialog();//CreateAudiobooksWelcomeDialog();
-                    settings.DialogHeight = 260;
+                    settings.Content = CreatePositionChooseView();//CreateUpdateToLectorDialog();//CreateAudiobooksWelcomeDialog();
+                    //settings.DialogHeight = 280;
 
 
                     var dialog = new NBMaterialAlertDialog();
@@ -128,9 +128,9 @@ namespace NBMaterialDialogXamarinIOS.Sample
                 {
                     var pages = new List<NBPageDialogItem>()
                     {
-                        new NBPageDialogItem(CreateAudiobooksWelcomeDialog(),300),
-                        new NBPageDialogItem(CreateAudiobooksHowToDialog(), 260),
-                        new NBPageDialogItem(CreateAudiobooksWelcomeDialog(),300)
+                        new NBPageDialogItem(CreateWelcomaPageOneView(),240),
+                        new NBPageDialogItem(CreateWelcomaPageTwoView(), 300),
+                        //new NBPageDialogItem(CreateAudiobooksWelcomeDialog(),300)
 
                     };
                     var settings = new NBPagedDialogSettings();
@@ -172,7 +172,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             alertLabel2.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
             alertLabel2.TranslatesAutoresizingMaskIntoConstraints = false;
             alertLabel2.Lines = 2;
-            alertLabel2.Font = UIFontExtensions.RobotoRegularOfSize(dialogWidth <= 240 ? NormalFontSize-1 : NormalFontSize);
+            alertLabel2.Font = UIFontExtensions.RobotoRegularOfSize(dialogWidth <= 240 ? NormalFontSize - 1 : NormalFontSize);
             alertLabel2.TextColor = NBConfig.PrimaryTextDark;
             alertLabel2.Text = "Twojej mobilnej bibliotece, liczącej tysiące tomów";
             alertLabel2.SizeToFit();
@@ -183,7 +183,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             alertLabel3.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
             alertLabel3.TranslatesAutoresizingMaskIntoConstraints = false;
             alertLabel3.Lines = 18;
-            alertLabel3.Font = UIFontExtensions.RobotoRegularOfSize(dialogWidth <= 240 ? SmallFontSize -1 : SmallFontSize);
+            alertLabel3.Font = UIFontExtensions.RobotoRegularOfSize(dialogWidth <= 240 ? SmallFontSize - 1 : SmallFontSize);
             alertLabel3.TextColor = NBConfig.PrimaryTextDark;
             alertLabel3.Text = "Pamiętaj, że zamawiając abonament bez limitu, część książek nie tylko przeczytasz, ale również odsłuchasz dzięki wersji z lektorem lub syntezatorem mowy (sukcesywnie zwiększamy ich liczbę). W każdej chwili możesz oczywiście przełączyć się między trybem czytania i słuchania.Pamiętaj, że zamawiając abonament bez limitu, część książek nie tylko przeczytasz, ale również odsłuchasz dzięki wersji z lektorem lub syntezatorem mowy (sukcesywnie zwiększamy ich liczbę). W każdej chwili możesz oczywiście przełączyć się między trybem czytania i słuchania.";
             alertLabel3.SizeToFit();
@@ -222,7 +222,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             alertLabel.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
             alertLabel.TranslatesAutoresizingMaskIntoConstraints = false;
             alertLabel.TextColor = NBConfig.PrimaryTextDark;
-            alertLabel.AttributedText = ParseBoldText("Ta książka posiada również <b>wersję audio.</b> Możesz więc w każdym momencie przełączyć się na tryb słuchania. Zrobisz to w tym miejscu:");
+            alertLabel.AttributedText = ParseBoldText("Ta książka posiada również <b>wersję audio.</b> Możesz więc w każdym momencie przełączyć się na tryb słuchania. Zrobisz to w tym miejscu:", SmallFontSize);
 
             view.AddSubview(alertLabel);
 
@@ -256,7 +256,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
                 NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
 
 
-            var imageWidth = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad ? 300f : dialogWidth <= 240f ? 180f :200f;
+            var imageWidth = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad ? 300f : dialogWidth <= 240f ? 180f : 200f;
             var imageHeight = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad ? 90f : 60f;
             imageView.AddConstraint(NSLayoutConstraint.Create(imageView, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
                 null, NSLayoutAttribute.NoAttribute, 1f, imageWidth));
@@ -269,13 +269,175 @@ namespace NBMaterialDialogXamarinIOS.Sample
         }
 
 
-        private NSAttributedString ParseBoldText(string text)
+        private UIView CreateWelcomaPageOneView()
+        {
+            var topView = UIApplication.SharedApplication.GetTopView();
+            var dialogWidth = topView.Frame.Width - 80;
+            var dialogHeight = 240;
+
+            UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
+            view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            view.TranslatesAutoresizingMaskIntoConstraints = true;
+            view.BackgroundColor = UIColor.Clear;
+
+            var alertLabel = new UILabel();
+            alertLabel.Lines = 0;
+            alertLabel.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            alertLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+            alertLabel.Font = UIFontExtensions.RobotoMediumOfSize(NormalFontSize);
+
+            alertLabel.TextColor = NBConfig.PrimaryTextDark;
+            alertLabel.Text = "Witaj w Legimi!";
+            alertLabel.SizeToFit();
+
+            view.AddSubview(alertLabel);
+
+            var alertLabel2 = new UILabel();
+            //new UILabel(new CGRect(0, alertLabel2.Frame.Y + alertLabel2.Frame.Height + 8, view.Frame.Width - 40, 130)));
+            alertLabel2.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            alertLabel2.TranslatesAutoresizingMaskIntoConstraints = false;
+            alertLabel2.Lines = 10;          
+            alertLabel2.TextColor = NBConfig.PrimaryTextDark;
+            alertLabel2.AttributedText = ParseBoldText("Oddajemy do Twojej dyspozycji ponad <b>20 tysięcy</b> tytułów. Możesz bezpłatnie wypróbować, jak wygodne jest czytanie i słuchanie książek z Legimi. Aktywując dostęp <b>bez limitu +</b> będziesz wygodnie zmieniać format z tekstowego na dźwiękowy, by nigdy nie rozstawać się z książką, która właśnie Cię pochłonęła.", dialogWidth <= 240 ? SmallFontSize - 1 : NormalFontSize);
+            alertLabel2.SizeToFit();
+            view.AddSubview(alertLabel2);
+
+            var constraintViews = new NSMutableDictionary();
+            constraintViews.SetValueForKey(alertLabel, new NSString("alertLabel"));
+            constraintViews.SetValueForKey(alertLabel2, new NSString("alertLabel2"));
+            constraintViews.SetValueForKey(view, new NSString("view"));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-8-[alertLabel]-8-[alertLabel2]",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[alertLabel]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[alertLabel2]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+
+            return view;
+        }
+
+
+        private UIView CreateWelcomaPageTwoView()
+        {
+            var topView = UIApplication.SharedApplication.GetTopView();
+            var dialogWidth = topView.Frame.Width - 80;
+            var dialogHeight = 280;
+
+            UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
+            view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            view.TranslatesAutoresizingMaskIntoConstraints = true;
+
+            var alertLabel = new UILabel();
+            alertLabel.Lines = 0;
+            alertLabel.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            alertLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+            alertLabel.Font = UIFontExtensions.RobotoRegularOfSize(NormalFontSize);
+            alertLabel.TextColor = NBConfig.PrimaryTextDark;
+            alertLabel.Text = "Pamiętaj że w Legimi spotkasz następujące formaty książek:";
+            alertLabel.SizeToFit();
+
+            view.AddSubview(alertLabel);
+
+            var formatView = new UIView(new CGRect(0, 0, dialogWidth, 40));
+            formatView.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            formatView.TranslatesAutoresizingMaskIntoConstraints = false;
+
+
+            var ebooksView = CreateFormatItemView(dialogWidth, "<b>ebook:</b> format tesktowy + dźwiękowy (syntezator mowy)", UIImage.FromBundle("ebook"));
+            var audiobooksView = CreateFormatItemView(dialogWidth, "<b>audiobooki:</b> format dźwiękowy (czytane przez lektora)", UIImage.FromBundle("audiobook"));
+            var synchroobookBookView = CreateFormatItemView(dialogWidth, "<b>synchrobooki:</b> format tesktowy + dźwiękowy (lektor)", UIImage.FromBundle("synchrobook"));
+
+            formatView.AddSubview(ebooksView);
+            formatView.AddSubview(audiobooksView);
+            formatView.AddSubview(synchroobookBookView);
+
+            var formatsConstraints = new NSMutableDictionary();
+            formatsConstraints.SetValueForKey(ebooksView, new NSString("ebooksView"));
+            formatsConstraints.SetValueForKey(audiobooksView, new NSString("audiobooksView"));
+            formatsConstraints.SetValueForKey(synchroobookBookView, new NSString("synchroobookBookView"));
+            formatsConstraints.SetValueForKey(formatView, new NSString("formatView"));
+            formatView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-4-[ebooksView]-4-[audiobooksView]-4-[synchroobookBookView]-4-|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: formatsConstraints));
+            formatView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[ebooksView]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: formatsConstraints));
+            formatView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[audiobooksView]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: formatsConstraints));
+            formatView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[synchroobookBookView]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: formatsConstraints));
+
+            view.AddSubview(formatView);
+
+            var alertLabel2 = new UILabel();
+            //new UILabel(new CGRect(0, alertLabel2.Frame.Y + alertLabel2.Frame.Height + 8, view.Frame.Width - 40, 130)));
+            alertLabel2.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            alertLabel2.TranslatesAutoresizingMaskIntoConstraints = false;
+            alertLabel2.Lines = 8;
+            alertLabel2.Font = UIFontExtensions.RobotoRegularOfSize(dialogWidth <= 240 ? SmallFontSize - 1 : SmallFontSize);
+            alertLabel2.TextColor = NBConfig.PrimaryTextDark;
+            alertLabel2.Text = "Użyj filtrów wyszukiwania, by mieć pewność, że dana książka jest dostępna w interesującym Cię formacie. Osoby zamawiające usługę Legimi poprzez operatorów komórkowych mogą korzystać tylko z formatu tekstowego.";
+            alertLabel2.SizeToFit();
+            view.AddSubview(alertLabel2);
+
+
+            var constraintViews = new NSMutableDictionary();
+            constraintViews.SetValueForKey(alertLabel, new NSString("alertLabel"));
+            constraintViews.SetValueForKey(alertLabel2, new NSString("alertLabel2"));
+            constraintViews.SetValueForKey(formatView, new NSString("formatView"));
+            constraintViews.SetValueForKey(view, new NSString("view"));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[alertLabel][formatView][alertLabel2]",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[alertLabel]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[formatView]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[alertLabel2]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+
+            return view;
+        }
+
+        private UIView CreateFormatItemView(nfloat dialogWidth, string description, UIImage image)
+        {
+            var formatContainerView = new UIView(new CGRect(0, 0, dialogWidth, 40));
+            formatContainerView.AutoresizingMask = UIViewAutoresizing.FlexibleHeight;
+            formatContainerView.TranslatesAutoresizingMaskIntoConstraints = false;
+
+            var formatLabel = new UILabel();
+            formatLabel.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            formatLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+            formatLabel.Lines = 2;
+            formatLabel.TextColor = NBConfig.PrimaryTextDark;
+            formatLabel.AttributedText = ParseBoldText(description, dialogWidth <= 240 ? SmallFontSize-1 : NormalFontSize);
+            formatLabel.SizeToFit();
+            formatContainerView.AddSubview(formatLabel);
+
+            var formatIcon = new UIImageView(image);
+            formatLabel.AutoresizingMask = UIViewAutoresizing.None;
+            formatIcon.TranslatesAutoresizingMaskIntoConstraints = true;
+            formatIcon.SizeToFit();
+            formatContainerView.ContentMode = UIViewContentMode.ScaleAspectFit;
+            formatContainerView.AddSubview(formatIcon);
+
+            var formatConstraints = new NSMutableDictionary();
+            formatConstraints.SetValueForKey(formatLabel, new NSString("formatLabel"));
+            formatConstraints.SetValueForKey(formatIcon, new NSString("formatIcon"));
+            formatConstraints.SetValueForKey(formatContainerView, new NSString("formatContainerView"));
+            formatContainerView.AddConstraints(NSLayoutConstraint.FromVisualFormat(
+                $"H:|-8-[formatIcon]-4-[formatLabel]-4-|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: formatConstraints));
+            formatContainerView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-4-[formatIcon]-4-|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: formatConstraints));
+            formatContainerView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"V:|-4-[formatLabel]",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: formatConstraints));
+            return formatContainerView;
+        }
+
+        private NSAttributedString ParseBoldText(string text, nfloat fontSize)
         {
             var pattern = "(<b>(?:(?!<b>).)*</b>)";
             var regex = new Regex(pattern, RegexOptions.IgnoreCase);
             string[] substrings = regex.Split(text);
 
-            var fontSize = SmallFontSize;
             var dictionary = new Dictionary<NSRange, UIStringAttributes>();
             var font = UIFontExtensions.RobotoRegularOfSize(fontSize);
             var sb = new StringBuilder();
@@ -299,7 +461,6 @@ namespace NBMaterialDialogXamarinIOS.Sample
                 sb.Append(res);
             }
 
-
             var attributedText = new NSMutableAttributedString(sb.ToString());
             foreach (var attributese in dictionary)
             {
@@ -308,5 +469,176 @@ namespace NBMaterialDialogXamarinIOS.Sample
 
             return attributedText;
         }
+
+        private UIView CreateUpdateToLectorDialog()
+        {
+            var topView = UIApplication.SharedApplication.GetTopView();
+            var dialogWidth = topView.Frame.Width - 80;
+            var dialogHeight = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad ? 420: 260;
+            UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
+            view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight;
+            view.TranslatesAutoresizingMaskIntoConstraints = true;
+            view.BackgroundColor = UIColor.Clear;
+
+            var alertLabel = new UILabel();
+            alertLabel.Lines = 0;
+            alertLabel.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            alertLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+            alertLabel.Font = UIFontExtensions.RobotoRegularOfSize(NormalFontSize);
+            alertLabel.TextColor = NBConfig.PrimaryTextDark;
+            alertLabel.Text =
+                "Jeśli w przyszłości zechcesz zaktualizować plik do wersji z lektorem, przejdź do zakładki  „Aktualizacja” i pobierz nową wersję.";
+
+            view.AddSubview(alertLabel);
+
+            var imageView = new UIImageView(UIImage.FromBundle("updateToLector"));
+            imageView.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
+            imageView.TranslatesAutoresizingMaskIntoConstraints = false;
+            imageView.Frame = new CGRect(0, 0, view.Frame.Width - 20, 100);
+            imageView.ContentMode = UIViewContentMode.ScaleAspectFit;
+            view.AddSubview(imageView);
+
+
+            var constraintViews = new NSMutableDictionary();
+            constraintViews.SetValueForKey(alertLabel, new NSString("alertLabel"));
+            constraintViews.SetValueForKey(imageView, new NSString("imageView"));
+            constraintViews.SetValueForKey(view, new NSString("view"));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-8-[alertLabel]-2-[imageView]",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-8-[alertLabel]-8-|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+
+
+            var imageWidth = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad ? 400 : dialogWidth <= 240f ? 160f : 200f;
+            var imageHeight = imageWidth * 0.7f;
+            imageView.AddConstraint(NSLayoutConstraint.Create(imageView, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
+                null, NSLayoutAttribute.NoAttribute, 1f, imageWidth));
+            imageView.AddConstraint(NSLayoutConstraint.Create(imageView, NSLayoutAttribute.Height,
+                NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1f, imageHeight));
+            view.AddConstraint(NSLayoutConstraint.Create(imageView, NSLayoutAttribute.CenterX, NSLayoutRelation.Equal,
+                view, NSLayoutAttribute.CenterX, 1f, 0f));
+
+            return view;
+        }
+
+        public UIView CreatePositionChooseView()
+        {
+            var topView = UIApplication.SharedApplication.GetTopView();
+            var dialogWidth = topView.Frame.Width - 80;
+            var dialogHeight = 260;
+
+            UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
+            view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+            view.TranslatesAutoresizingMaskIntoConstraints = true;
+            view.BackgroundColor = UIColor.Clear;
+
+            var contentLabel = new UILabel();
+            contentLabel.Lines = 0;
+            contentLabel.TextColor = NBConfig.PrimaryTextDark;
+            contentLabel.Font = UIFontExtensions.RobotoRegularOfSize(NormalFontSize);
+            contentLabel.Text = "Od którego miejsca chcesz kontynuować czytanie?";
+            contentLabel.SizeToFit();
+            view.AddSubview(contentLabel);
+
+            return view;
+
+        }
+
+        //public IObservable<DialogListResult<T>> ShowListDialog<T>(IEnumerable<T> listItems, string cancelOption = null, string title = null, bool cancelable = false) where T : DialogListItem
+        //{
+        //    var items = listItems.ToList();
+        //    var dialogHeight = 70 * items.Count;
+        //    if (dialogHeight > 220)
+        //    {
+        //        dialogHeight = 220;
+        //    }
+
+        //    var subject = new Subject<DialogListResult<T>>();
+        //    var settings = new NBAlertDialogSettings
+        //    {
+        //        Title = title,
+        //        DialogHeight = dialogHeight + 40,
+        //        HideDialogOnTapOnOverlay = cancelable
+        //    };
+
+        //    var topView = UIApplication.SharedApplication.GetTopView();
+        //    var dialogWidth = topView.Frame.Width - 80;
+
+
+        //    var scroll = new UIScrollView(new CGRect(0, 0, dialogWidth, dialogHeight))
+        //    {
+        //        ShowsHorizontalScrollIndicator = false,
+        //        ShowsVerticalScrollIndicator = true
+        //    };
+
+
+        //    int top = 0;
+        //    int contentHeight = 0;
+        //    int contentWidth = 0;
+        //    int i = 0;
+        //    foreach (var listItem in items)
+        //    {
+        //        var itemViewHeight = 10;
+        //        var itemView = new DialogListItemView(new CGRect(0, top, dialogWidth, itemViewHeight));
+        //        var item = listItem;
+
+        //        var tapGesture = new UITapGestureRecognizer(() =>
+        //        {
+        //            subject.OnNext(new DialogListResult<T>(DialogResult.Positive, item));
+        //            subject.OnCompleted();
+        //        });
+
+        //        itemView.AddGestureRecognizer(tapGesture);
+
+        //        var iosListItem = item as IOSDialogListItem;
+        //        var left = 0;
+        //        if (iosListItem?.IconResource != null)
+        //        {
+        //            var itemImage = new UIImageView();
+        //            itemImage.Image = UIImage.FromBundle(iosListItem.IconResource);
+        //            itemImage.SizeToFit();
+        //            itemView.AddSubview(itemImage);
+        //            itemViewHeight = (int)itemImage.Frame.Height;
+        //            left = (int)itemImage.Frame.Width + 12;
+        //        }
+
+        //        var alertLabel = new UILabel();
+        //        alertLabel.Lines = 0;
+        //        alertLabel.Font = UIFontExtensions.RobotoRegularOfSize(IOSDialogViewProvider.NormalFontSize);
+        //        alertLabel.TextColor = NBConfig.PrimaryTextDark;
+        //        alertLabel.Text = listItem.Content;
+        //        alertLabel.SizeToFit();
+        //        alertLabel.Frame = new CGRect(left, 0, dialogWidth - left, alertLabel.Frame.Height);
+
+        //        itemViewHeight = (int)Math.Max(itemViewHeight, alertLabel.Frame.Height);
+
+        //        itemView.Frame = new CGRect(0, top, dialogWidth, itemViewHeight);
+        //        if (itemViewHeight > alertLabel.Frame.Height)
+        //            alertLabel.CenterVerticalInParent(itemView.Frame);
+        //        itemView.AddSubview(alertLabel);
+
+        //        scroll.AddSubview(itemView);
+        //        if (i == items.Count - 1)
+        //        {
+        //            contentHeight = top + (int)itemView.Frame.Height;
+        //            contentWidth = (int)alertLabel.Frame.Width;
+        //        }
+
+        //        top += itemViewHeight + 8;
+        //        i++;
+        //    }
+        //    scroll.ContentSize = new CGSize(contentWidth, contentHeight);
+        //    settings.Content = scroll;
+
+        //    var dialog = new NBMaterialAlertDialog();
+        //    dialog.ShowDialog(settings);
+
+        //    return subject.AsObservable()
+        //        .Select(res =>
+        //        {
+        //            dialog.HideDialog();
+        //            return res;
+        //        });
+        //}
     }
 }
