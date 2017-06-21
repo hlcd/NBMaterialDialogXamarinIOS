@@ -66,7 +66,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
                     var settings = new NBAlertDialogSettings();
                     settings.OkButtonTitle = "OK";
                     settings.Content = CreatePositionChooseView();//CreateUpdateToLectorDialog();//CreateAudiobooksWelcomeDialog();
-                    //settings.DialogHeight = 280;
+                    settings.DialogHeight = 280;
 
 
                     var dialog = new NBMaterialAlertDialog();
@@ -521,24 +521,171 @@ namespace NBMaterialDialogXamarinIOS.Sample
             return view;
         }
 
-        public UIView CreatePositionChooseView()
-        {
-            var topView = UIApplication.SharedApplication.GetTopView();
-            var dialogWidth = topView.Frame.Width - 80;
-            var dialogHeight = 260;
+		public UIView CreatePositionChooseView()
+		{
+			var topView = UIApplication.SharedApplication.GetTopView();
+			var dialogWidth = topView.Frame.Width - 80;
+			var dialogHeight = 260;
 
-            UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
-            view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
-            view.TranslatesAutoresizingMaskIntoConstraints = true;
-            view.BackgroundColor = UIColor.Clear;
+			UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
+			view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+			view.TranslatesAutoresizingMaskIntoConstraints = true;
+			view.BackgroundColor = UIColor.Clear;
 
-            var contentLabel = new UILabel();
-            contentLabel.Lines = 0;
-            contentLabel.TextColor = NBConfig.PrimaryTextDark;
-            contentLabel.Font = UIFontExtensions.RobotoRegularOfSize(NormalFontSize);
-            contentLabel.Text = "Od którego miejsca chcesz kontynuować czytanie?";
-            contentLabel.SizeToFit();
-            view.AddSubview(contentLabel);
+			var contentLabel = new UILabel(new CGRect(0, 0, dialogWidth - 20, 20));
+			contentLabel.Lines = 0;
+			contentLabel.LineBreakMode = UILineBreakMode.WordWrap;
+			//contentLabel.PreferredMaxLayoutWidth = dialogWidth;
+			contentLabel.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
+			contentLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+			contentLabel.TextColor = NBConfig.PrimaryTextDark;
+			contentLabel.Font = UIFontExtensions.RobotoRegularOfSize(NormalFontSize);
+			contentLabel.Text = "Od którego miejsca chcesz kontynuować czytanie?";
+			contentLabel.SizeToFit();
+			view.AddSubview(contentLabel);
+
+			var scroll = new UIScrollView(new CGRect(0, 0, dialogWidth, dialogHeight - contentLabel.Frame.Height))
+			{
+				ShowsHorizontalScrollIndicator = false,
+				ShowsVerticalScrollIndicator = true,
+				BackgroundColor = UIColor.Red
+			};
+			scroll.Bounces = false;
+			scroll.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+			scroll.TranslatesAutoresizingMaskIntoConstraints = false;
+
+
+			int top = 0;
+			int contentHeight = 0;
+			int contentWidth = (int)scroll.Frame.Width;
+			var itemViewWidth = dialogWidth - 40;
+			var itemViewHeight = 10;
+
+			var internalView = new UIView();
+			internalView.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+			internalView.TranslatesAutoresizingMaskIntoConstraints = false;
+			internalView.BackgroundColor = UIColor.Green;
+
+			var itemViews = new List<UIView>();
+
+			for (int i = 0; i < 2; i++)
+			{
+
+
+
+				var itemView = new UIView();
+				itemView.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+				itemView.TranslatesAutoresizingMaskIntoConstraints = false;
+				var itemTop = 0;
+
+				var alertLabel = new UILabel();
+				alertLabel.Lines = 0;
+				alertLabel.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+				alertLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+				alertLabel.LineBreakMode = UILineBreakMode.WordWrap;
+				alertLabel.TextColor = NBConfig.PrimaryTextDark;
+				alertLabel.Font = UIFontExtensions.RobotoRegularOfSize(NormalFontSize);
+				alertLabel.Text = "Od miejsca, w którym zakonczono na tym urządzeniu ";
+				itemView.AddSubview(alertLabel);
+
+
+				var chapterLabel = new UILabel();
+				chapterLabel.Lines = 0;
+				chapterLabel.LineBreakMode = UILineBreakMode.WordWrap;
+				chapterLabel.TextColor = NBConfig.PrimaryTextDark;
+				chapterLabel.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+				chapterLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+				chapterLabel.Font = UIFontExtensions.RobotoMediumOfSize(SmallFontSize);
+				chapterLabel.Text = "Rozdział 12";
+				itemView.AddSubview(chapterLabel);
+
+
+				var pageLabel = new UILabel();
+				pageLabel.Lines = 0;
+				pageLabel.LineBreakMode = UILineBreakMode.WordWrap;
+				pageLabel.TextColor = NBConfig.PrimaryTextDark;
+				pageLabel.Font = UIFontExtensions.RobotoRegularOfSize(SmallFontSize);
+				pageLabel.Text = "s. 220";
+				pageLabel.TextColor = NBConfig.PrimaryTextDark;
+				pageLabel.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
+				pageLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+				itemView.AddSubview(pageLabel);
+
+				var itemConstraints = new NSMutableDictionary();
+				itemConstraints.SetValueForKey(itemView, new NSString("itemView"));
+				itemConstraints.SetValueForKey(alertLabel, new NSString("alertLabel"));
+				itemConstraints.SetValueForKey(chapterLabel, new NSString("chapterLabel"));
+				itemConstraints.SetValueForKey(pageLabel, new NSString("pageLabel"));
+				itemView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[alertLabel]-4-[chapterLabel]-4-[pageLabel]|",
+				NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: itemConstraints));
+				itemView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[alertLabel]|",
+					NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: itemConstraints));
+				itemView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[chapterLabel]|",
+					NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: itemConstraints));
+				itemView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[pageLabel]|",
+					NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: itemConstraints));
+
+				//itemView.AddConstraint(NSLayoutConstraint.Create(alertLabel, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
+				//													 itemView, NSLayoutAttribute.Width, 1f, 0f));
+				//itemView.AddConstraint(NSLayoutConstraint.Create(chapterLabel, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
+				//													 itemView, NSLayoutAttribute.Width, 1f, 0f));
+				//itemView.AddConstraint(NSLayoutConstraint.Create(pageLabel, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
+				//													 itemView, NSLayoutAttribute.Width, 1f, 0f));
+
+				//internalView.AddConstraint(NSLayoutConstraint.Create(itemView, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
+				//													 internalView, NSLayoutAttribute.Width, 1f, 0f));
+				itemViews.Add(itemView);
+			}
+
+			var internalconstraintViews = new NSMutableDictionary(); 
+            internalconstraintViews.SetValueForKey(internalView, new NSString("internalView"));
+            
+			int x = 1;
+			string horizontalFormat = "V:|";
+			foreach (var itemView in itemViews)
+			{
+				var itemId = $"itemView{x}";
+				internalView.AddSubview(itemView);
+				internalconstraintViews.SetValueForKey(itemView, new NSString(itemId));   
+				internalView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|[{itemId}]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: internalconstraintViews));
+				horizontalFormat += $"[{itemId}]-4-";
+				x++;
+			}
+			horizontalFormat += "|";
+
+			internalView.AddConstraints(NSLayoutConstraint.FromVisualFormat(horizontalFormat,
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: internalconstraintViews));
+		
+			scroll.AddConstraint(NSLayoutConstraint.Create(internalView, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
+			                                                     scroll, NSLayoutAttribute.Width, 1f, 0f));
+			
+
+			scroll.AddSubview(internalView);
+
+			var scrollconstraintViews = new NSMutableDictionary();     
+			scrollconstraintViews.SetValueForKey(scroll, new NSString("scroll"));     
+            scrollconstraintViews.SetValueForKey(internalView, new NSString("internalView"));
+            scroll.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[internalView]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: scrollconstraintViews));
+            scroll.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[internalView]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: scrollconstraintViews));
+
+			view.AddSubview(scroll);
+			var constraintViews = new NSMutableDictionary();
+			constraintViews.SetValueForKey(contentLabel, new NSString("contentLabel"));     
+			constraintViews.SetValueForKey(scroll, new NSString("scroll"));     
+            constraintViews.SetValueForKey(view, new NSString("view"));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-4-[contentLabel]-[scroll]-4-|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-4-[contentLabel]-4-|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+			 view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[scroll]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+			
+//			view.AddConstraint(NSLayoutConstraint.Create(scroll, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
+//			                                                     null, NSLayoutAttribute.Width, 1f, 100f));
+
 
             return view;
 
