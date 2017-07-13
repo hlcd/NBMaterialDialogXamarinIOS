@@ -54,6 +54,7 @@ namespace NBMaterialDialogXamarinIOS
         protected NSMutableDictionary constraintViews;
         protected nfloat? _dialogHeight;
         protected bool _hideDialogOnTapOnOverlay;
+        private Action _cancelAction;
 
         public NBMaterialDialog()
         {
@@ -89,7 +90,7 @@ namespace NBMaterialDialogXamarinIOS
 
         public void HideDialog()
         {
-            HideDialog(-1);
+            HideDialog(-1, false);
         }
 
         /**
@@ -97,11 +98,16 @@ namespace NBMaterialDialogXamarinIOS
             :params: buttonIndex The tag index of the button which was clicked
         */
 
-        internal virtual void HideDialog(int buttonIndex)
+        internal virtual void HideDialog(int buttonIndex, bool userCancelled)
         {
             if (buttonIndex >= 0)
             {
                 userAction?.Invoke(buttonIndex > 0);
+            }
+
+            if (buttonIndex < 0 && _hideDialogOnTapOnOverlay)
+            {
+                _cancelAction?.Invoke();
             }
 
             tappableView.RemoveGestureRecognizer(tapGesture);
@@ -118,6 +124,7 @@ namespace NBMaterialDialogXamarinIOS
         public virtual NBMaterialDialog ShowDialog(NBDialogSettings settings)
         {
             _hideDialogOnTapOnOverlay = settings.HideDialogOnTapOnOverlay;
+            _cancelAction = settings.CancelAction;
             _dialogHeight = settings.DialogHeight;
             isStacked = settings.StackedButtons;
 
@@ -212,7 +219,7 @@ namespace NBMaterialDialogXamarinIOS
                 var windowSize = windowView.Bounds;
                 containerView.Frame = new CGRect(kWidthMargin, (windowSize.Height - (_dialogHeight ?? kMinimumHeight))/2,
                     windowSize.Width - (kWidthMargin*2), Math.Min(kMaxHeight, (_dialogHeight ?? kMinimumHeight)));
-                containerView.ClipsToBounds = true;
+                containerView.ClipsToBounds = true;  
             //    contentView.Frame = new CGRect(0,0,containerView.Frame.Width-48f, contentView.Frame.Height);
                 //View.Frame = windowView.Bounds;
             }
@@ -225,7 +232,7 @@ namespace NBMaterialDialogXamarinIOS
         internal virtual void TappedBg()
         {
             if (_hideDialogOnTapOnOverlay)
-                HideDialog(-1);
+                HideDialog(-1, true);
         }
 
 
@@ -235,7 +242,7 @@ namespace NBMaterialDialogXamarinIOS
         */
         internal virtual void PressedAnyButton(NSObject sender)
         {
-            HideDialog((int)(sender as UIButton).Tag);
+            HideDialog((int)(sender as UIButton).Tag, false);
         }
 
 

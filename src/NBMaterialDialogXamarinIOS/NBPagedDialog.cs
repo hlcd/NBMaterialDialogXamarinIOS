@@ -34,7 +34,7 @@ namespace NBMaterialDialogXamarinIOS
         {
             if (_pages.Count == 0 || _currentPage == _pages.Count - 1)
             {
-                HideDialog((int) (sender as UIButton).Tag);
+                HideDialog((int) (sender as UIButton).Tag, false);
             }
             else
             {

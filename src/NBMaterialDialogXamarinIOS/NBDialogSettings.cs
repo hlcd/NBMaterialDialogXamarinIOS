@@ -25,6 +25,8 @@ namespace NBMaterialDialogXamarinIOS
 
         public Action<bool> ButtonAction { get; set; }
 
+        public Action CancelAction { get; set; }
+
         public bool StackedButtons { get; set; }
 
         public bool HideDialogOnTapOnOverlay { get; set; }      
