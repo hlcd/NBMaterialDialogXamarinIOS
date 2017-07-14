@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Mime;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -61,16 +62,27 @@ namespace NBMaterialDialogXamarinIOS.Sample
             alertDialogButton.SetTitleColor(UIColor.Blue, UIControlState.Normal);
             alertDialogButton.SetTitle("Show Alert Dialog with title", UIControlState.Normal);
             alertDialogButton.TouchUpInside +=
-                (sender, args) =>
+                async (sender, args) =>
                 {
                     var settings = new NBAlertDialogSettings();
                     settings.OkButtonTitle = "OK";
                     settings.Content = CreatePositionChooseView();//CreateUpdateToLectorDialog();//CreateAudiobooksWelcomeDialog();
                     settings.DialogHeight = 280;
 					settings.HideDialogOnTapOnOverlay = true;
-					settings.CancelAction = () => NBMaterialToast.Show($"dialog was cancelled", NBLunchDuration.Long);
+					settings.CancelAction = () =>
+					{
+						NBMaterialToast.Show($"dialog was cancelled", NBLunchDuration.Long);
+					};
+					settings.ButtonAction = (b) =>
+					{
+						NBMaterialToast.Show($"dialog has result", NBLunchDuration.Long);
+					};
 					var dialog = new NBMaterialAlertDialog();
 					dialog.ShowDialog(settings);
+
+					await Task.Delay(TimeSpan.FromSeconds(5));
+
+					dialog.HideDialog();
                 };
             View.AddSubview(alertDialogButton);
 

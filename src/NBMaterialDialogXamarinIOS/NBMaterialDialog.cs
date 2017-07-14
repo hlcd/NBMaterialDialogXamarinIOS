@@ -105,7 +105,7 @@ namespace NBMaterialDialogXamarinIOS
                 userAction?.Invoke(buttonIndex > 0);
             }
 
-            if (buttonIndex < 0 && _hideDialogOnTapOnOverlay)
+			if (buttonIndex < 0 && _hideDialogOnTapOnOverlay && userCancelled)
             {
                 _cancelAction?.Invoke();
             }
