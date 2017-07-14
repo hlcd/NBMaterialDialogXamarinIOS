@@ -67,10 +67,10 @@ namespace NBMaterialDialogXamarinIOS.Sample
                     settings.OkButtonTitle = "OK";
                     settings.Content = CreatePositionChooseView();//CreateUpdateToLectorDialog();//CreateAudiobooksWelcomeDialog();
                     settings.DialogHeight = 280;
-
-
-                    var dialog = new NBMaterialAlertDialog();
-                    dialog.ShowDialog(settings);
+					settings.HideDialogOnTapOnOverlay = true;
+					settings.CancelAction = () => NBMaterialToast.Show($"dialog was cancelled", NBLunchDuration.Long);
+					var dialog = new NBMaterialAlertDialog();
+					dialog.ShowDialog(settings);
                 };
             View.AddSubview(alertDialogButton);
 
