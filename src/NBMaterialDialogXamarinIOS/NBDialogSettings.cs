@@ -19,6 +19,8 @@ namespace NBMaterialDialogXamarinIOS
 
         public nfloat? DialogHeight { get; set; }
 
+        public nfloat? DialogWidth { get; set; }
+
         public string OkButtonTitle { get; set; }
 
         public string CancelButtonTitle { get; set; }

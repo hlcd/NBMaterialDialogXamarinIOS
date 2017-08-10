@@ -53,6 +53,7 @@ namespace NBMaterialDialogXamarinIOS
         protected Action<bool> userAction;
         protected NSMutableDictionary constraintViews;
         protected nfloat? _dialogHeight;
+        protected nfloat? _dialogWidth;
         protected bool _hideDialogOnTapOnOverlay;
         private Action _cancelAction;
 
@@ -126,6 +127,7 @@ namespace NBMaterialDialogXamarinIOS
             _hideDialogOnTapOnOverlay = settings.HideDialogOnTapOnOverlay;
             _cancelAction = settings.CancelAction;
             _dialogHeight = settings.DialogHeight;
+            _dialogWidth = settings.DialogWidth;
             isStacked = settings.StackedButtons;
 
             nfloat totalButtonTitleLength = 0.0f;
@@ -217,8 +219,12 @@ namespace NBMaterialDialogXamarinIOS
             if (windowView != null)
             {
                 var windowSize = windowView.Bounds;
-                containerView.Frame = new CGRect(kWidthMargin, (windowSize.Height - (_dialogHeight ?? kMinimumHeight))/2,
-                    windowSize.Width - (kWidthMargin*2), Math.Min(kMaxHeight, (_dialogHeight ?? kMinimumHeight)));
+                var height = _dialogHeight ?? kMinimumHeight;
+                var defaultWidth = windowSize.Width - (kWidthMargin * 2);
+                var width = _dialogWidth ?? defaultWidth;
+                var leftMargin = width == defaultWidth ? kWidthMargin : (windowSize.Width - width) / 2;
+                containerView.Frame = new CGRect(leftMargin, (windowSize.Height - height)/2,
+                    width, Math.Min(kMaxHeight, height));
                 containerView.ClipsToBounds = true;  
             //    contentView.Frame = new CGRect(0,0,containerView.Frame.Width-48f, contentView.Frame.Height);
                 //View.Frame = windowView.Bounds;
