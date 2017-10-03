@@ -88,11 +88,17 @@
     <Compile Include="AppDelegate.cs" />
     <None Include="Info.plist" />
     <Compile Include="MainViewController.cs" />
+    <Compile Include="MaterialCheckBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <InterfaceDefinition Include="Resources\LaunchScreen.xib" />
     <Content Include="Entitlements.plist" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="SaturdayMP.XPlugins.iOS.BEMCheckBox, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\sln\NBMaterialDialogXamarinIOS\packages\SaturdayMP.XPlugins.iOS.BEMCheckBox.1.4.1\lib\Xamarin.iOS10\SaturdayMP.XPlugins.iOS.BEMCheckBox.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />

@@ -65,9 +65,10 @@ namespace NBMaterialDialogXamarinIOS.Sample
                 async (sender, args) =>
                 {
                     var settings = new NBAlertDialogSettings();
-                    settings.OkButtonTitle = "OK";
+                    settings.CancelButtonTitle = "Anuluj";
                     settings.Content = CreatePositionChooseView();//CreateUpdateToLectorDialog();//CreateAudiobooksWelcomeDialog();
                     settings.DialogHeight = 280;
+                    settings.DialogWidth = 200;
 					settings.HideDialogOnTapOnOverlay = true;
 					settings.CancelAction = () =>
 					{
