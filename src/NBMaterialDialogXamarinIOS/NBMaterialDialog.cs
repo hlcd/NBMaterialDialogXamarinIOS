@@ -305,7 +305,7 @@ namespace NBMaterialDialogXamarinIOS
             if (okButton != null)
             {
                 constraintViews.SetValueForKey(okButton, new NSString("okButton"));
-                containerView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:[content]-24-[okButton(==36)]-8-|",
+                containerView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:[content]-[okButton(==36)]-8-|",
                     NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
 
                 // The cancel button is only shown when the ok button is visible
@@ -323,6 +323,14 @@ namespace NBMaterialDialogXamarinIOS
                     containerView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:[okButton(>=64)]-8-|",
                         NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
                 }
+            }
+            else if (cancelButton != null)
+            {
+                constraintViews.SetValueForKey(cancelButton, new NSString("cancelButton"));
+                containerView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:[content]-[cancelButton(==36)]-8-|",
+                    NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+                containerView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:[cancelButton(>=64)]-8-|",
+                    NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,6 +13,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
 {
     public class MainViewController : UIViewController
     {
+        private bool IsPad { get; } = UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad;
 
         private const float IPhoneSmallFontSize = 12f;
         private const float IPadSmallFontSize = 18f;
@@ -24,7 +26,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
                 ? IPadSmallFontSize
                 : IPhoneSmallFontSize);
 
-        protected nfloat NormalFontSize
+        public static nfloat NormalFontSize
             =>
             new nfloat(UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad
                 ? IPadNormalFontSize
@@ -64,26 +66,45 @@ namespace NBMaterialDialogXamarinIOS.Sample
             alertDialogButton.TouchUpInside +=
                 async (sender, args) =>
                 {
-                    var settings = new NBAlertDialogSettings();
-                    settings.CancelButtonTitle = "Anuluj";
-                    settings.Content = CreatePositionChooseView();//CreateUpdateToLectorDialog();//CreateAudiobooksWelcomeDialog();
-                    settings.DialogHeight = 280;
-                    settings.DialogWidth = 200;
-					settings.HideDialogOnTapOnOverlay = true;
-					settings.CancelAction = () =>
-					{
-						NBMaterialToast.Show($"dialog was cancelled", NBLunchDuration.Long);
-					};
-					settings.ButtonAction = (b) =>
-					{
-						NBMaterialToast.Show($"dialog has result", NBLunchDuration.Long);
-					};
-					var dialog = new NBMaterialAlertDialog();
+                    var buttons = new List<ButtonOptionItem>();
+                    buttons.Add(new ButtonOptionItem("Usuń z kolekcji", "Usuwa pozycję z bieżącej kolekcji, jej pliki pozostają zachowane."));
+                    //buttons.Add(new ButtonOptionItem("Usuń dane", "Usuwa pliki z urządzenia. Pozycja w formie niepobranej pozostaje w przypisanych jej kolekcjach."));
+                    //buttons.Add(new ButtonOptionItem("Przenieś do kosza", "Usuwa pozycję ze wszystkich kolekcji użytkownika i przenosi ją do kosza, kasując powiązane pliki z urządzenia."));
+
+                    var content = CreateButtonsDescriptionView(buttons);
+                    var settings = new NBAlertDialogSettings
+                    {
+                        Content = content,
+                        DialogHeight = content.Frame.Height,
+                        DialogWidth = content.Frame.Width,
+                        CancelButtonTitle = "Anuluj", // bug with NBMaterialDialogs,
+                        HideDialogOnTapOnOverlay = true// string.IsNullOrEmpty(cancelText) == false
+                    };
+
+
+
+
+                    //               var settings = new NBAlertDialogSettings();
+                    //               //settings.OkButtonTitle = "Ok";
+                    //               settings.CancelButtonTitle = "Anuluj";
+                    //               settings.Content = CreatePositionChooseView();//CreateUpdateToLectorDialog();//CreateAudiobooksWelcomeDialog();
+                    //               settings.DialogHeight = 280;
+                    //               settings.DialogWidth = 200;
+                    //settings.HideDialogOnTapOnOverlay = true;
+                    settings.CancelAction = () =>
+                    {
+                        NBMaterialToast.Show($"dialog was cancelled", NBLunchDuration.Long);
+                    };
+                    settings.ButtonAction = (b) =>
+                    {
+                        NBMaterialToast.Show($"dialog has result", NBLunchDuration.Long);
+                    };
+                    var dialog = new NBMaterialAlertDialog();
 					dialog.ShowDialog(settings);
 
-					await Task.Delay(TimeSpan.FromSeconds(5));
+					//await Task.Delay(TimeSpan.FromSeconds(5));
 
-					dialog.HideDialog();
+					//dialog.HideDialog();
                 };
             View.AddSubview(alertDialogButton);
 
@@ -141,13 +162,14 @@ namespace NBMaterialDialogXamarinIOS.Sample
                 {
                     var pages = new List<NBPageDialogItem>()
                     {
-                        new NBPageDialogItem(CreateWelcomaPageOneView(),240),
+                        //new NBPageDialogItem(CreateWelcomaPageOneView(),240),
                         new NBPageDialogItem(CreateWelcomaPageTwoView(), 300),
                         //new NBPageDialogItem(CreateAudiobooksWelcomeDialog(),300)
 
                     };
                     var settings = new NBPagedDialogSettings();
-                    settings.OkButtonTitle = "OK";
+                    //settings.OkButtonTitle = "OK";
+                    settings.HideDialogOnTapOnOverlay = true;
                     settings.Pages = pages;
 
 
@@ -334,11 +356,12 @@ namespace NBMaterialDialogXamarinIOS.Sample
         {
             var topView = UIApplication.SharedApplication.GetTopView();
             var dialogWidth = topView.Frame.Width - 80;
-            var dialogHeight = 280;
+            var dialogHeight = 300;
 
             UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
             view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
             view.TranslatesAutoresizingMaskIntoConstraints = true;
+            view.BackgroundColor = UIColor.Blue;
 
             var alertLabel = new UILabel();
             alertLabel.Lines = 0;
@@ -387,7 +410,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             alertLabel2.Lines = 8;
             alertLabel2.Font = UIFontExtensions.RobotoRegularOfSize(dialogWidth <= 240 ? SmallFontSize - 1 : SmallFontSize);
             alertLabel2.TextColor = NBConfig.PrimaryTextDark;
-            alertLabel2.Text = "Użyj filtrów wyszukiwania, by mieć pewność, że dana książka jest dostępna w interesującym Cię formacie. Osoby zamawiające usługę Legimi poprzez operatorów komórkowych mogą korzystać tylko z formatu tekstowego.";
+            alertLabel2.Text = "Użyj filtrów wyszukiwania, by mieć pewność, że dana książka jest dostępna w interesującym Cię formacie. Osoby zamawiające usługę Legimi poprzez operatorów komórkowych mogą korzystać tylko z formatu tekstowego Użyj filtrów wyszukiwania, by mieć pewność, że dana książka jest dostępna w interesującym Cię formacie. Osoby zamawiające usługę Legimi poprzez operatorów komórkowych mogą korzystać tylko z formatu tekstowego.";
             alertLabel2.SizeToFit();
             view.AddSubview(alertLabel2);
 
@@ -537,27 +560,27 @@ namespace NBMaterialDialogXamarinIOS.Sample
 		public UIView CreatePositionChooseView()
 		{
 			var topView = UIApplication.SharedApplication.GetTopView();
-			var dialogWidth = topView.Frame.Width - 80;
-			var dialogHeight = 260;
+		    var dialogWidth = 200;//topView.Frame.Width - 80;
+			var dialogHeight = 280;
 
 			UIView view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight));
 			view.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
 			view.TranslatesAutoresizingMaskIntoConstraints = true;
 			view.BackgroundColor = UIColor.Clear;
 
-			var contentLabel = new UILabel(new CGRect(0, 0, dialogWidth - 20, 20));
-			contentLabel.Lines = 0;
-			contentLabel.LineBreakMode = UILineBreakMode.WordWrap;
-			//contentLabel.PreferredMaxLayoutWidth = dialogWidth;
-			contentLabel.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
-			contentLabel.TranslatesAutoresizingMaskIntoConstraints = false;
-			contentLabel.TextColor = NBConfig.PrimaryTextDark;
-			contentLabel.Font = UIFontExtensions.RobotoRegularOfSize(NormalFontSize);
-			contentLabel.Text = "Od którego miejsca chcesz kontynuować czytanie?";
-			contentLabel.SizeToFit();
-			view.AddSubview(contentLabel);
+			//var contentLabel = new UILabel(new CGRect(0, 0, dialogWidth - 20, 20));
+			//contentLabel.Lines = 0;
+			//contentLabel.LineBreakMode = UILineBreakMode.WordWrap;
+			////contentLabel.PreferredMaxLayoutWidth = dialogWidth;
+			//contentLabel.AutoresizingMask = UIViewAutoresizing.FlexibleWidth;
+			//contentLabel.TranslatesAutoresizingMaskIntoConstraints = false;
+			//contentLabel.TextColor = NBConfig.PrimaryTextDark;
+			//contentLabel.Font = UIFontExtensions.RobotoRegularOfSize(NormalFontSize);
+			//contentLabel.Text = "Od którego miejsca chcesz kontynuować czytanie?";
+			//contentLabel.SizeToFit();
+			//view.AddSubview(contentLabel);
 
-			var scroll = new UIScrollView(new CGRect(0, 0, dialogWidth, dialogHeight - contentLabel.Frame.Height))
+			var scroll = new UIScrollView(new CGRect(0, 0, dialogWidth, dialogHeight))
 			{
 				ShowsHorizontalScrollIndicator = false,
 				ShowsVerticalScrollIndicator = true,
@@ -581,7 +604,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
 
 			var itemViews = new List<UIView>();
 
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 3; i++)
 			{
 
 
@@ -686,13 +709,13 @@ namespace NBMaterialDialogXamarinIOS.Sample
 
 			view.AddSubview(scroll);
 			var constraintViews = new NSMutableDictionary();
-			constraintViews.SetValueForKey(contentLabel, new NSString("contentLabel"));     
+			//constraintViews.SetValueForKey(contentLabel, new NSString("contentLabel"));     
 			constraintViews.SetValueForKey(scroll, new NSString("scroll"));     
             constraintViews.SetValueForKey(view, new NSString("view"));
-            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-4-[contentLabel]-[scroll]-4-|",
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[scroll]|",
                 NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
-            view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-4-[contentLabel]-4-|",
-                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            //view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|-4-[contentLabel]-4-|",
+            //    NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
 			 view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[scroll]|",
                 NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
 			
@@ -702,6 +725,181 @@ namespace NBMaterialDialogXamarinIOS.Sample
 
             return view;
 
+        }
+
+        public UIView CreateButtonsDescriptionView(IEnumerable<ButtonOptionItem> items, string checkboxText = null)
+        {
+            var buttons = items.ToList();
+            var topView = UIApplication.SharedApplication.GetTopView();
+            var dialogWidth = IsPad ? 600 : topView.Frame.Width - 80;
+            var dialogHeight = buttons.Count() * 140;
+            //if (IsPad)
+            //    DialogWidth = (float)dialogWidth;
+
+            var view = new UIView(new CGRect(0, 0, dialogWidth, dialogHeight))
+            {
+                AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth,
+                TranslatesAutoresizingMaskIntoConstraints = true,
+                BackgroundColor = UIColor.Clear
+            };
+
+            var checkbox = new MaterialCheckBox
+            {
+                Text = checkboxText,
+                AutoresizingMask = UIViewAutoresizing.FlexibleWidth,
+                TranslatesAutoresizingMaskIntoConstraints = false
+            };
+            checkbox.SetVisibility(() => string.IsNullOrEmpty(checkboxText) == false);
+            view.AddSubview(checkbox);
+
+            var scroll = new UIScrollView(new CGRect(0, 0, dialogWidth, dialogHeight))
+            {
+                ShowsHorizontalScrollIndicator = false,
+                ShowsVerticalScrollIndicator = true,
+                Bounces = false,
+                AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth,
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = UIColor.Red
+            };
+
+            var internalView = new UIView
+            {
+                AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth,
+                TranslatesAutoresizingMaskIntoConstraints = false,
+            };
+
+            var itemViews = new List<UIView>();
+            int j = 0;
+            foreach (var item in buttons)
+            {
+                var index = j;
+                var itemView = new UIView
+                {
+                    AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth,
+                    TranslatesAutoresizingMaskIntoConstraints = false,
+                    BackgroundColor = UIColor.Green
+                };
+
+                var message = new UILabel
+                {
+                    Lines = 0,
+                    AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth,
+                    TranslatesAutoresizingMaskIntoConstraints = false,
+                    Font = UIFontExtensions.RobotoMediumOfSize(NormalFontSize),
+                    TextColor = NBConfig.PrimaryTextDark,
+                    Text = item.Description,
+                    TextAlignment = UITextAlignment.Center
+                };
+
+                itemView.AddSubview(message);
+
+                var actionButton = new UIButton
+                {
+                    AutoresizingMask = UIViewAutoresizing.FlexibleWidth,
+                    TranslatesAutoresizingMaskIntoConstraints = false,
+                    BackgroundColor = NBConfig.AccentColor,
+                };
+                actionButton.SetTitleColor(UIColor.White, UIControlState.Normal);
+                actionButton.Layer.CornerRadius = 5;
+                actionButton.ClipsToBounds = true;
+                actionButton.SetTitle(item.ButtonCaption, UIControlState.Normal);
+                actionButton.TitleLabel.Font = UIFontExtensions.RobotoMediumOfSize(NormalFontSize);
+                actionButton.TouchUpInside += (sender, e) =>
+                {
+                    //PublishResult(item, index);
+                };
+                itemView.AddSubview(actionButton);
+
+                var itemConstraints = new NSMutableDictionary();
+                itemConstraints.SetValueForKey(itemView, new NSString("itemView"));
+                itemConstraints.SetValueForKey(message, new NSString("message"));
+                itemConstraints.SetValueForKey(actionButton, new NSString("actionButton"));
+                itemView.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[actionButton]-[message]-|",
+                    NSLayoutFormatOptions.DirectionLeadingToTrailing, null, itemConstraints));
+                itemView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[message]|",
+                    NSLayoutFormatOptions.DirectionLeadingToTrailing, null, itemConstraints));
+                itemView.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[actionButton]|",
+                    NSLayoutFormatOptions.DirectionLeadingToTrailing, null, itemConstraints));
+                //itemView.AddConstraint(NSLayoutConstraint.Create(message, NSLayoutAttribute., NSLayoutRelation.Equal,
+                //                                                        itemView, NSLayoutAttribute.CenterY, 1f, 0f));
+                itemViews.Add(itemView);
+                j++;
+            }
+
+            var internalconstraintViews = new NSMutableDictionary();
+            internalconstraintViews.SetValueForKey(internalView, new NSString("internalView"));
+
+            var i = 1;
+            var verticalFormat = new StringBuilder("V:|");
+            foreach (var itemView in itemViews)
+            {
+                var itemId = $"itemView{i}";
+                internalView.AddSubview(itemView);
+                internalconstraintViews.SetValueForKey(itemView, new NSString(itemId));
+                internalView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|[{itemId}]|",
+                    NSLayoutFormatOptions.DirectionLeadingToTrailing, null, internalconstraintViews));
+
+                if (i < itemViews.Count)
+                {
+                    var separator = new UIView(new CGRect(0, 0, 0, 10))
+                    {
+                        AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight,
+                        TranslatesAutoresizingMaskIntoConstraints = false,
+                        BackgroundColor = UIColorExtensions.FromHex(0xE0E0E0)
+                    };
+                    internalView.AddSubview(separator);
+                    var separatorId = $"separator{i}";
+                    internalconstraintViews.SetValueForKey(separator, new NSString(separatorId));
+                    internalView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|[{separatorId}]-4-|",
+                        NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: internalconstraintViews));
+
+                    internalView.AddConstraint(NSLayoutConstraint.Create(separator, NSLayoutAttribute.Height,
+                        NSLayoutRelation.Equal, null, NSLayoutAttribute.Height, 1f, 1f));
+
+                    verticalFormat.Append($"[{itemId}]-2-[{separatorId}]-4-");
+                }
+                else
+                {
+                    verticalFormat.Append($"[{itemId}]-2-");
+                }
+
+                i++;
+            }
+            verticalFormat.Append("|");
+
+            internalView.AddConstraints(NSLayoutConstraint.FromVisualFormat(verticalFormat.ToString(),
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, null, internalconstraintViews));
+
+            scroll.AddConstraint(NSLayoutConstraint.Create(internalView, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
+                scroll, NSLayoutAttribute.Width, 1f, 0f));
+
+            scroll.AddSubview(internalView);
+
+            var scrollconstraintViews = new NSMutableDictionary();
+            scrollconstraintViews.SetValueForKey(scroll, new NSString("scroll"));
+            scrollconstraintViews.SetValueForKey(internalView, new NSString("internalView"));
+            scroll.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[internalView]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, null, scrollconstraintViews));
+            scroll.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[internalView]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, null, scrollconstraintViews));
+
+
+            view.AddSubview(scroll);
+
+            var constraintViews = new NSMutableDictionary();
+            constraintViews.SetValueForKey(checkbox, new NSString("Checkbox"));
+            constraintViews.SetValueForKey(scroll, new NSString("Scroll"));
+            constraintViews.SetValueForKey(view, new NSString("view"));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat(
+                "V:|[Scroll]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraints(NSLayoutConstraint.FromVisualFormat(
+                "H:|[Scroll]|",
+                NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
+            view.AddConstraint(NSLayoutConstraint.Create(checkbox, NSLayoutAttribute.CenterX,
+                                                         NSLayoutRelation.Equal, view, NSLayoutAttribute.CenterX, 1f, 1f));
+
+            return view;
         }
 
         //public IObservable<DialogListResult<T>> ShowListDialog<T>(IEnumerable<T> listItems, string cancelOption = null, string title = null, bool cancelable = false) where T : DialogListItem
