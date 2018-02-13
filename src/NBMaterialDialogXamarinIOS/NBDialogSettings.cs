@@ -31,6 +31,8 @@ namespace NBMaterialDialogXamarinIOS
 
         public bool StackedButtons { get; set; }
 
-        public bool HideDialogOnTapOnOverlay { get; set; }      
+        public bool HideDialogOnTapOnOverlay { get; set; }
+        
+        public int? RequestedYPosition { get; set; }
     }
 }

@@ -77,8 +77,10 @@ namespace NBMaterialDialogXamarinIOS.Sample
                         Content = content,
                         DialogHeight = content.Frame.Height,
                         DialogWidth = content.Frame.Width,
-                        CancelButtonTitle = "Anuluj", // bug with NBMaterialDialogs,
-                        HideDialogOnTapOnOverlay = true// string.IsNullOrEmpty(cancelText) == false
+                        CancelButtonTitle = "Anuluj",
+                        HideDialogOnTapOnOverlay = true,
+                        RequestedYPosition = 0
+                        
                     };
 
 
