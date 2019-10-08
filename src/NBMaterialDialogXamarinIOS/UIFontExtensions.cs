@@ -14,10 +14,10 @@ namespace NBMaterialDialogXamarinIOS
         private static readonly object LoadLock = new object();
 
 
-        public static void LoadFont(string name)
+        public static void LoadFont(string name, string format)
         {
             var bundle = NSBundle.FromClass(new Class(typeof(NBMaterialCircularActivityIndicator)));
-            var fontURL = bundle.GetUrlForResource(name, "ttf");
+            var fontURL = bundle.GetUrlForResource(name, format);
             var data = NSData.FromUrl(fontURL);
 
             var provider = new CGDataProvider(data);
@@ -43,24 +43,25 @@ namespace NBMaterialDialogXamarinIOS
             return LoadFont(fontSize, name);
         }
 
-        private static UIFont LoadFont(nfloat fontSize, string name)
+        private static UIFont LoadFont(nfloat fontSize, string name, string format = "ttf")
         {
             lock (LoadLock)
             {
-                try
-                {
-                    var font = UIFont.FromName(name, fontSize);
-                    if (font != null)
-                        return font;
-                    LoadFont(name);
-                }
-                catch (Exception)
-                {
-                    Debug.WriteLine("Unable to load font");
-                }
+                var font = UIFont.FromName(name, fontSize);
+                if (font != null)
+                    return font;
+                LoadFont(name, format);
             }
 
             return UIFont.FromName(name, fontSize);
+        }
+
+        public static UIFont ArialFont(nfloat size) => UIFont.FromName("ArialMT", size);
+
+        public static UIFont MontserratFontSemiBold(nfloat size)
+        {
+            var name = "Montserrat-SemiBold";
+            return LoadFont(size, name, "otf");
         }
     }
 

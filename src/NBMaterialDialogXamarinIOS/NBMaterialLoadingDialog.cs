@@ -25,7 +25,7 @@ namespace NBMaterialDialogXamarinIOS
 
         /**
         Displays a loading dialog with a loading spinner, and a message
-       
+
         - parameter message: The message displayed to the user while its loading
         - returns: The Loading Dialog
         */
@@ -43,7 +43,7 @@ namespace NBMaterialDialogXamarinIOS
             containerView.AddSubview(circularLoadingActivity);
 
             loadingLabel.TranslatesAutoresizingMaskIntoConstraints = false;
-            loadingLabel.Font = UIFontExtensions.RobotoRegularOfSize(14);
+            loadingLabel.Font = UIFontExtensions.ArialFont(14);
             loadingLabel.TextColor = NBConfig.PrimaryTextDark;
             loadingLabel.Text = settings.Text;
             // TODO: Add support for multiple lines, probably need to fix the dynamic dialog height todo first

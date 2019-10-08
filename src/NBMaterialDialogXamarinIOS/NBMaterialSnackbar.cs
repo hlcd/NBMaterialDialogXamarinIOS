@@ -20,7 +20,7 @@ namespace NBMaterialDialogXamarinIOS
         private nfloat kHorizontalPadding = 24.0f;
         private nfloat kVerticalSinglePadding = 14.0f;
         private nfloat kVerticalMultiPadding = 24.0f;
-        private UIFont kFontRoboto = UIFontExtensions.RobotoMediumOfSize(14);
+        private UIFont kFontRoboto = UIFontExtensions.MontserratFontSemiBold(14);
         private UIColor kFontColor = NBConfig.PrimaryTextLight;
         private UIColor kDefaultBackground = UIColorExtensions.FromHex(hex: 0x323232, alpha: 1.0f);
 
@@ -119,7 +119,7 @@ namespace NBMaterialDialogXamarinIOS
 
         /**
         Displays a snackbar (new in material design) at the bottom of the screen
-        
+
         - parameter text: The message to be displayed
         */
         public static void Show(string text, UIView windowView = null)

@@ -16,7 +16,7 @@ namespace NBMaterialDialogXamarinIOS
         {
             var alertLabel = new UILabel();
             alertLabel.Lines = 0;
-            alertLabel.Font = UIFontExtensions.RobotoRegularOfSize(settings.FontSize);
+            alertLabel.Font = UIFontExtensions.ArialFont(settings.FontSize);
             alertLabel.TextColor = NBConfig.PrimaryTextDark;
             alertLabel.Text = settings.Text;
             alertLabel.SizeToFit();

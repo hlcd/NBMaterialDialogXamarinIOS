@@ -21,7 +21,7 @@ namespace NBMaterialDialogXamarinIOS
         private nfloat kMinHeight = new nfloat(48.0);
         private nfloat kHorizontalPadding = new nfloat(24.0);
         private nfloat kVerticalPadding = new nfloat(16.0);
-        private UIFont kFontRoboto = UIFontExtensions.RobotoRegularOfSize(14);
+        private UIFont kFontRoboto = UIFontExtensions.ArialFont(14);
         private UIColor kFontColor = NBConfig.PrimaryTextLight;
         private UIColor kDefaultBackground = UIColorExtensions.FromHex(hex: 0x323232, alpha: 1.0f);
 
@@ -130,7 +130,7 @@ namespace NBMaterialDialogXamarinIOS
         }
 
         /**
-            Displays a classic toast message with a user defined text and duration    
+            Displays a classic toast message with a user defined text and duration
             - parameter windowView: The window which the toast is to be attached
             - parameter text: The message to be displayed
             - parameter duration: The duration of the toast

@@ -53,7 +53,7 @@ namespace NBMaterialDialogXamarinIOS
 
             SetupContainerView();
             // Add content to contentView
-            
+
             contentView = _pages[_currentPage].View;
             SetupContentView();
 
@@ -101,7 +101,7 @@ namespace NBMaterialDialogXamarinIOS
 
             if (settings.OkButtonTitle != null)
             {
-                UIStringAttributes attribs = new UIStringAttributes { Font = UIFontExtensions.RobotoMediumOfSize(14f) };
+                UIStringAttributes attribs = new UIStringAttributes { Font = UIFontExtensions.MontserratFontSemiBold(14f) };
                 totalButtonTitleLength += new NSString(settings.OkButtonTitle.ToUpper()).GetSizeUsingAttributes(attribs).Width + 8;
                 if (settings.CancelButtonTitle != null)
                 {

@@ -157,7 +157,7 @@ namespace NBMaterialDialogXamarinIOS
 
             if (settings.OkButtonTitle != null)
             {
-                UIStringAttributes attribs = new UIStringAttributes { Font = UIFontExtensions.RobotoMediumOfSize(14f) };
+                UIStringAttributes attribs = new UIStringAttributes { Font = UIFontExtensions.MontserratFontSemiBold(14f) };
                 totalButtonTitleLength += new NSString(settings.OkButtonTitle.ToUpper()).GetSizeUsingAttributes(attribs).Width + 8;
                 if (settings.CancelButtonTitle != null)
                 {
@@ -235,7 +235,7 @@ namespace NBMaterialDialogXamarinIOS
                     containerView.Frame = new CGRect(leftMargin, _requestedYPosition.Value, width, Math.Min(kMaxHeight, height));
                 }
 
-                containerView.ClipsToBounds = true;  
+                containerView.ClipsToBounds = true;
                 //contentView.Frame = new CGRect(0,0,containerView.Frame.Width-48f, contentView.Frame.Height);
                 //View.Frame = windowView.Bounds;
             }
@@ -373,7 +373,7 @@ namespace NBMaterialDialogXamarinIOS
             if (title != null)
             {
                 titleLabel.TranslatesAutoresizingMaskIntoConstraints = false;
-                titleLabel.Font = UIFontExtensions.RobotoMediumOfSize(20);
+                titleLabel.Font = UIFontExtensions.MontserratFontSemiBold(20);
                 titleLabel.TextColor = UIColor.FromWhiteAlpha(white: 0.13f, alpha: 1.0f);
                 titleLabel.Lines = 0;
                 titleLabel.Text = title;
@@ -389,7 +389,7 @@ namespace NBMaterialDialogXamarinIOS
             button.SetTitleColor(NBConfig.AccentColor, UIControlState.Normal);
             button.IsRaised = false;
             if (button.TitleLabel != null)
-                button.TitleLabel.Font = UIFontExtensions.RobotoMediumOfSize(14);
+                button.TitleLabel.Font = UIFontExtensions.MontserratFontSemiBold(14);
             if (isStacked)
             {
                 //button.. = UIControlContentHorizontalAlignment.Right;
