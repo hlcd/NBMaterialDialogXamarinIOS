@@ -16,7 +16,7 @@ namespace NBMaterialDialogXamarinIOS
     public class NBMaterialToast : UIView
     {
         private nfloat kHorizontalMargin = new nfloat(16.0);
-        private nfloat kVerticalBottomMargin = new nfloat(16.0);
+        private nfloat kVerticalBottomMargin = new nfloat(30.0);
 
         private nfloat kMinHeight = new nfloat(48.0);
         private nfloat kHorizontalPadding = new nfloat(24.0);
@@ -68,19 +68,21 @@ namespace NBMaterialDialogXamarinIOS
         private static NBMaterialToast CreateWithTextAndConstraints(UIView windowView, string text, NBLunchDuration duration)
         {
 
-            var toast = new NBMaterialToast();
-            toast.lunchDuration = duration;
-            toast.Alpha = 0.0f;
-            toast.TranslatesAutoresizingMaskIntoConstraints = false;
+            var toast = new NBMaterialToast
+            {
+                lunchDuration = duration, Alpha = 0.0f, TranslatesAutoresizingMaskIntoConstraints = false
+            };
 
-            var textLabel = new UILabel();
-            textLabel.BackgroundColor = UIColor.Clear;
-            textLabel.TextAlignment = UITextAlignment.Left;
-            textLabel.Font = toast.kFontRoboto;
-            textLabel.TextColor = toast.kFontColor;
-            textLabel.Lines = 0;
-            textLabel.TranslatesAutoresizingMaskIntoConstraints = false;
-            textLabel.Text = text;
+            var textLabel = new UILabel
+            {
+                BackgroundColor = UIColor.Clear,
+                TextAlignment = UITextAlignment.Left,
+                Font = toast.kFontRoboto,
+                TextColor = toast.kFontColor,
+                Lines = 0,
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                Text = text
+            };
 
             if (toast.hasRoundedCorners)
             {
@@ -95,10 +97,20 @@ namespace NBMaterialDialogXamarinIOS
             toast.constraintViews.SetValueForKey(textLabel, new NSString("textLabel"));
             toast.constraintViews.SetValueForKey(toast, new NSString("toast"));
 
+            var verticalBottomMargin = toast.kVerticalBottomMargin;
+            if (UIDevice.CurrentDevice.CheckSystemVersion(11, 0))
+            {
+                var insets = UIApplication.SharedApplication.Windows[0].SafeAreaInsets;
+                if (insets.Bottom > 0)
+                {
+                    verticalBottomMargin += insets.Bottom;
+                }
+            }
+
             toast.constraintMetrics.SetValueForKey(new NSNumber(toast.kVerticalPadding), new NSString("vPad"));
             toast.constraintMetrics.SetValueForKey(new NSNumber(toast.kHorizontalPadding), new NSString("hPad"));
             toast.constraintMetrics.SetValueForKey(new NSNumber(toast.kMinHeight), new NSString("minHeight"));
-            toast.constraintMetrics.SetValueForKey(new NSNumber(toast.kVerticalBottomMargin),new NSString("vMargin"));
+            toast.constraintMetrics.SetValueForKey(new NSNumber(verticalBottomMargin),new NSString("vMargin"));
             toast.constraintMetrics.SetValueForKey(new NSNumber(toast.kHorizontalMargin), new NSString("hMargin"));
 
             toast.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|-vPad-[textLabel]-vPad-|", NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: toast.constraintMetrics, views: toast.constraintViews));
