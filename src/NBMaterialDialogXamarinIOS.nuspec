@@ -2,14 +2,14 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
 	<id>NBMaterialDialogXamarinIOS</id>
-	<version>1.0.14</version>
+	<version>1.0.15</version>
 	<title>NBMaterialDialogXamarinIOS</title>
 	<authors>Holycode</authors>
 	<owners>Holycode</owners>
 	<iconUrl>http://holy.co.de/wp-content/uploads/2016/01/ico-64x64.png</iconUrl>
 	<requireLicenseAcceptance>false</requireLicenseAcceptance>
 	<description>Port NBMaterialDialog to Xamarin.IOS</description>
-	<releaseNotes>Allow to set Y start position</releaseNotes>
+	<releaseNotes>Include safe area</releaseNotes>
 	<copyright>Copyright 2016 Holycode</copyright>
 	<dependencies>
 		<group>
