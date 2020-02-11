@@ -19,6 +19,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
         private const float IPadSmallFontSize = 18f;
         private const float IPhoneNormalFontSize = 14f;
         private const float IPadNormalFontSize = 20f;
+        private ToastStyle _toastStyle = new ToastStyle(UIColorExtensions.FromHex(0xdcdcdc,1), UIColorExtensions.FromHex(0x353535,1));
 
         protected nfloat SmallFontSize
             =>
@@ -40,6 +41,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+
             var loadingIndicatoLabel = new UILabel(new CGRect(32, 56, 195, 21));
             loadingIndicatoLabel.Text = "Simple loading indicator:";
             loadingIndicatoLabel.MinimumFontSize = 17;
@@ -57,7 +59,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
                     b =>
                     {
                         string button = b ? "DISAGREE" : "AGREE";
-                        NBMaterialToast.Show($"{button} was clicked", NBLunchDuration.Long);
+                        NBMaterialToast.Show($"{button} was clicked", NBLunchDuration.Long, _toastStyle);
                     });
 
             var alertDialogButton = new UIButton(new CGRect(32, 139, 230, 30));
@@ -80,7 +82,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
                         CancelButtonTitle = "Anuluj",
                         HideDialogOnTapOnOverlay = true,
                         RequestedYPosition = 0
-                        
+
                     };
 
 
@@ -95,11 +97,11 @@ namespace NBMaterialDialogXamarinIOS.Sample
                     //settings.HideDialogOnTapOnOverlay = true;
                     settings.CancelAction = () =>
                     {
-                        NBMaterialToast.Show($"dialog was cancelled", NBLunchDuration.Long);
+                        NBMaterialToast.Show($"dialog was cancelled", NBLunchDuration.Long,_toastStyle);
                     };
                     settings.ButtonAction = (b) =>
                     {
-                        NBMaterialToast.Show($"dialog has result", NBLunchDuration.Long);
+                        NBMaterialToast.Show($"dialog has result", NBLunchDuration.Long,_toastStyle);
                     };
                     var dialog = new NBMaterialAlertDialog();
 					dialog.ShowDialog(settings);
@@ -143,7 +145,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             showToastButton.SetTitle("Display a simple Toast", UIControlState.Normal);
             showToastButton.TouchUpInside +=
                 (sender, args) =>
-                        NBMaterialToast.Show("Super awesome toast message, cheers!", NBLunchDuration.Long);
+                        NBMaterialToast.Show("Super awesome toast message, cheers!", NBLunchDuration.Long,_toastStyle);
 
             View.AddSubview(showToastButton);
 
@@ -333,7 +335,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             //new UILabel(new CGRect(0, alertLabel2.Frame.Y + alertLabel2.Frame.Height + 8, view.Frame.Width - 40, 130)));
             alertLabel2.AutoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth;
             alertLabel2.TranslatesAutoresizingMaskIntoConstraints = false;
-            alertLabel2.Lines = 10;          
+            alertLabel2.Lines = 10;
             alertLabel2.TextColor = NBConfig.PrimaryTextDark;
             alertLabel2.AttributedText = ParseBoldText("Oddajemy do Twojej dyspozycji ponad <b>20 tysięcy</b> tytułów. Możesz bezpłatnie wypróbować, jak wygodne jest czytanie i słuchanie książek z Legimi. Aktywując dostęp <b>bez limitu +</b> będziesz wygodnie zmieniać format z tekstowego na dźwiękowy, by nigdy nie rozstawać się z książką, która właśnie Cię pochłonęła.", dialogWidth <= 240 ? SmallFontSize - 1 : NormalFontSize);
             alertLabel2.SizeToFit();
@@ -675,16 +677,16 @@ namespace NBMaterialDialogXamarinIOS.Sample
 				itemViews.Add(itemView);
 			}
 
-			var internalconstraintViews = new NSMutableDictionary(); 
+			var internalconstraintViews = new NSMutableDictionary();
             internalconstraintViews.SetValueForKey(internalView, new NSString("internalView"));
-            
+
 			int x = 1;
 			string horizontalFormat = "V:|";
 			foreach (var itemView in itemViews)
 			{
 				var itemId = $"itemView{x}";
 				internalView.AddSubview(itemView);
-				internalconstraintViews.SetValueForKey(itemView, new NSString(itemId));   
+				internalconstraintViews.SetValueForKey(itemView, new NSString(itemId));
 				internalView.AddConstraints(NSLayoutConstraint.FromVisualFormat($"H:|[{itemId}]|",
                 NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: internalconstraintViews));
 				horizontalFormat += $"[{itemId}]-4-";
@@ -694,15 +696,15 @@ namespace NBMaterialDialogXamarinIOS.Sample
 
 			internalView.AddConstraints(NSLayoutConstraint.FromVisualFormat(horizontalFormat,
                 NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: internalconstraintViews));
-		
+
 			scroll.AddConstraint(NSLayoutConstraint.Create(internalView, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
 			                                                     scroll, NSLayoutAttribute.Width, 1f, 0f));
-			
+
 
 			scroll.AddSubview(internalView);
 
-			var scrollconstraintViews = new NSMutableDictionary();     
-			scrollconstraintViews.SetValueForKey(scroll, new NSString("scroll"));     
+			var scrollconstraintViews = new NSMutableDictionary();
+			scrollconstraintViews.SetValueForKey(scroll, new NSString("scroll"));
             scrollconstraintViews.SetValueForKey(internalView, new NSString("internalView"));
             scroll.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[internalView]|",
                 NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: scrollconstraintViews));
@@ -711,8 +713,8 @@ namespace NBMaterialDialogXamarinIOS.Sample
 
 			view.AddSubview(scroll);
 			var constraintViews = new NSMutableDictionary();
-			//constraintViews.SetValueForKey(contentLabel, new NSString("contentLabel"));     
-			constraintViews.SetValueForKey(scroll, new NSString("scroll"));     
+			//constraintViews.SetValueForKey(contentLabel, new NSString("contentLabel"));
+			constraintViews.SetValueForKey(scroll, new NSString("scroll"));
             constraintViews.SetValueForKey(view, new NSString("view"));
             view.AddConstraints(NSLayoutConstraint.FromVisualFormat("V:|[scroll]|",
                 NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
@@ -720,7 +722,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
             //    NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
 			 view.AddConstraints(NSLayoutConstraint.FromVisualFormat("H:|[scroll]|",
                 NSLayoutFormatOptions.DirectionLeadingToTrailing, metrics: null, views: constraintViews));
-			
+
 //			view.AddConstraint(NSLayoutConstraint.Create(scroll, NSLayoutAttribute.Width, NSLayoutRelation.Equal,
 //			                                                     null, NSLayoutAttribute.Width, 1f, 100f));
 

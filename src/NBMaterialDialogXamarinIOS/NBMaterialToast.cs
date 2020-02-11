@@ -22,8 +22,6 @@ namespace NBMaterialDialogXamarinIOS
         private nfloat kHorizontalPadding = new nfloat(24.0);
         private nfloat kVerticalPadding = new nfloat(16.0);
         private UIFont kFontRoboto = UIFontExtensions.ArialFont(14);
-        private UIColor kFontColor = NBConfig.PrimaryTextLight;
-        private UIColor kDefaultBackground = UIColorExtensions.FromHex(hex: 0x323232, alpha: 1.0f);
 
         private NBLunchDuration lunchDuration;
         private bool hasRoundedCorners;
@@ -52,7 +50,7 @@ namespace NBMaterialDialogXamarinIOS
             lunchDuration = NBLunchDuration.Medium;
             hasRoundedCorners = true;
             UserInteractionEnabled = false;
-            BackgroundColor = kDefaultBackground;
+            BackgroundColor = ToastStyle.Default.BackgroundColor;
         }
 
         private void Show()
@@ -65,12 +63,17 @@ namespace NBMaterialDialogXamarinIOS
             UIView.Animate(0.8, _durations[lunchDuration], UIViewAnimationOptions.TransitionNone, () => Alpha = 0.0f, RemoveFromSuperview);
         }
 
-        private static NBMaterialToast CreateWithTextAndConstraints(UIView windowView, string text, NBLunchDuration duration)
+        private static NBMaterialToast CreateWithTextAndConstraints(UIView windowView, string text, NBLunchDuration duration, ToastStyle style)
         {
+            if (style == null)
+                throw new ArgumentNullException(nameof(style));
 
             var toast = new NBMaterialToast
             {
-                lunchDuration = duration, Alpha = 0.0f, TranslatesAutoresizingMaskIntoConstraints = false
+                lunchDuration = duration,
+                Alpha = 0.0f,
+                TranslatesAutoresizingMaskIntoConstraints = false,
+                BackgroundColor = style.BackgroundColor
             };
 
             var textLabel = new UILabel
@@ -78,7 +81,7 @@ namespace NBMaterialDialogXamarinIOS
                 BackgroundColor = UIColor.Clear,
                 TextAlignment = UITextAlignment.Left,
                 Font = toast.kFontRoboto,
-                TextColor = toast.kFontColor,
+                TextColor = style.FontColor,
                 Lines = 0,
                 TranslatesAutoresizingMaskIntoConstraints = false,
                 Text = text
@@ -138,7 +141,7 @@ namespace NBMaterialDialogXamarinIOS
         */
         public static void Show(string text, UIView windowView = null)
         {
-            NBMaterialToast.Show(text, NBLunchDuration.Medium);
+            Show(text, NBLunchDuration.Medium, ToastStyle.Default);
         }
 
         /**
@@ -147,15 +150,17 @@ namespace NBMaterialDialogXamarinIOS
             - parameter text: The message to be displayed
             - parameter duration: The duration of the toast
         */
-        public static void Show(string text, NBLunchDuration duration, UIView windowView = null)
+        public static void Show(string text, NBLunchDuration duration, ToastStyle style, UIView windowView = null)
         {
+            if (style == null)
+                throw new ArgumentNullException(nameof(style));
+
             if (windowView == null)
             {
                 windowView = UIApplication.SharedApplication.GetTopView();
             }
 
-            NBMaterialToast toast = NBMaterialToast.CreateWithTextAndConstraints(windowView, text: text,
-                duration: duration);
+            var toast = CreateWithTextAndConstraints(windowView, text, duration, style);
             toast.Show();
         }
 
