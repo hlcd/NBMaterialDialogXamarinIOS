@@ -84,6 +84,7 @@ namespace NBMaterialDialogXamarinIOS
                 TextColor = style.FontColor,
                 Lines = 0,
                 TranslatesAutoresizingMaskIntoConstraints = false,
+                AccessibilityIdentifier = "NbMaterialToastLabel",
                 Text = text
             };
 
