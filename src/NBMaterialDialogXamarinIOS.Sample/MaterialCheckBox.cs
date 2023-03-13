@@ -1,6 +1,5 @@
 ﻿using CoreGraphics;
 using Foundation;
-using SaturdayMP.XPlugins.iOS;
 using UIKit;
 using static NBMaterialDialogXamarinIOS.Sample.MainViewController;
 
@@ -12,7 +11,7 @@ namespace NBMaterialDialogXamarinIOS.Sample
 
         private UILabel Label { get; set; }
 
-        private BEMCheckBox Checkbox { get; set; }
+        private UISwitch Checkbox { get; set; }
 
         public MaterialCheckBox()
         {
@@ -28,18 +27,14 @@ namespace NBMaterialDialogXamarinIOS.Sample
 
             AddSubview(Label);
 
-            Checkbox = new BEMCheckBox(new CGRect(0, 0, 25, 25))
+            // Replaced BEMCheckBox with UISwitch after migrating to .Net 6.0
+            Checkbox = new UISwitch(new CGRect(0, 0, 25, 25))
             {
-                BoxType = BEMBoxType.Square,
-                OnAnimationType = BEMAnimationType.Fill,
-                OffAnimationType = BEMAnimationType.Fill,
-                OnFillColor = NBConfig.AccentColor,
                 OnTintColor = NBConfig.AccentColor,
-                OnCheckColor = UIColor.White
             };
             AddSubview(Checkbox);
 
-            var tapGesture = new UITapGestureRecognizer(() => Checkbox.SetOn(!Checkbox.On, true));
+            var tapGesture = new UITapGestureRecognizer(() => Checkbox.On = !Checkbox.On);
             Label.AddGestureRecognizer(tapGesture);
         }
 
