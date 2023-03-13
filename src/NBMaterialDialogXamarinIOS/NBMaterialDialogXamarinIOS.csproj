@@ -3,6 +3,10 @@
     <TargetFramework>net6.0-ios</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>true</ImplicitUsings>
+    <Version>1.0.18</Version>
+    <PackageReleaseNotes>Update to .net 6.0</PackageReleaseNotes>
+    <AssemblyVersion>1.0.18</AssemblyVersion>
+    <FileVersion>1.0.18</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BFPaperButtonXamarinIOS" Version="1.0.2" />
